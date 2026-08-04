@@ -1,0 +1,15 @@
+#!/bin/sh
+set -e
+
+echo "Setting up Calamares desktop launcher for Amelia Live user..."
+
+if [ -f /etc/skel/Desktop/install-amelia.desktop ]; then
+    chmod +x /etc/skel/Desktop/install-amelia.desktop
+fi
+
+if [ -d /home/user ]; then
+    mkdir -p /home/user/Desktop
+    cp /etc/skel/Desktop/install-amelia.desktop /home/user/Desktop/
+    chmod +x /home/user/Desktop/install-amelia.desktop
+    chown -R user:user /home/user/Desktop || true
+fi

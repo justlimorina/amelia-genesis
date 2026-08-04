@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Install Amelia
+Comment=Install Amelia OS to your hard drive
+Exec=sudo -E calamares
+Icon=calamares
+Terminal=false
+Categories=System;
+StartupNotify=true

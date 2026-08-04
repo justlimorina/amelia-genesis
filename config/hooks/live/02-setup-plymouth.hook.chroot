@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e
+
+echo "Setting up Plymouth Spinner theme for Amelia..."
+
+# Ensure Plymouth spinner theme directory exists
+mkdir -p /usr/share/plymouth/themes/spinner
+
+# Copy amelia full white logo if available
+if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-white.svg" ]; then
+    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/plymouth/themes/spinner/watermark.svg || true
+fi
+
+# Set default plymouth theme to spinner
+if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+    plymouth-set-default-theme -R spinner || true
+fi

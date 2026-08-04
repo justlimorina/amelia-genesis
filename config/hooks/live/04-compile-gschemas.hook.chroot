@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+echo "Updating Font Cache for Adwaita Sans and Adwaita Mono..."
+if command -v fc-cache >/dev/null 2>&1; then
+    fc-cache -f /usr/share/fonts/truetype/adwaita || true
+fi
+
+echo "Compiling Dconf GLib Schemas for Amelia GNOME settings..."
+if command -v glib-compile-schemas >/dev/null 2>&1; then
+    glib-compile-schemas /usr/share/glib-2.0/schemas || true
+fi

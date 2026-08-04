@@ -6,7 +6,7 @@
 QWidget {
     background-color: #fffbff;
     color: #1c1b1e;
-    font-family: "Inter", "Cantarell", "Noto Sans", sans-serif;
+    font-family: "Adwaita Sans", "Cantarell", sans-serif;
     font-size: 13px;
 }
 
