@@ -1,0 +1,7 @@
+#!/bin/sh
+set -e
+
+# Ensure correct permissions for sudoers file in live environment
+if [ -f /etc/sudoers.d/live-user ]; then
+    chmod 0440 /etc/sudoers.d/live-user
+fi

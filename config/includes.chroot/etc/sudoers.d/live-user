@@ -1,0 +1,3 @@
+# Sudoers configuration for Amelia Live session
+user ALL=(ALL) NOPASSWD: ALL
+amelia ALL=(ALL) NOPASSWD: ALL

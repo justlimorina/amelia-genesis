@@ -1,0 +1,189 @@
+/*
+ * Calamares Material Design 3 (MD3) Theme for Amelia
+ */
+
+/* Main Window */
+QWidget {
+    background-color: #fffbff;
+    color: #1c1b1e;
+    font-family: "Inter", "Cantarell", "Noto Sans", sans-serif;
+    font-size: 13px;
+}
+
+/* Sidebar App Layout */
+#sidebarApp {
+    background-color: #f4eff4;
+    border-right: 1px solid #e7e0ec;
+    min-width: 220px;
+}
+
+#sidebarApp QLabel {
+    color: #1c1b1e;
+}
+
+/* Sidebar Menu Items */
+#sidebarApp QTreeView {
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+#sidebarApp QTreeView::item {
+    padding: 10px 16px;
+    border-radius: 18px;
+    margin: 4px 8px;
+    color: #49454e;
+    font-weight: 500;
+}
+
+#sidebarApp QTreeView::item:hover {
+    background-color: #e7e0ec;
+    color: #1c1b1e;
+}
+
+#sidebarApp QTreeView::item:selected {
+    background-color: #e8ddff;
+    color: #22005d;
+    font-weight: bold;
+}
+
+/* Buttons - Material 3 Style */
+QPushButton {
+    background-color: #6650a4;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-weight: bold;
+    min-height: 24px;
+}
+
+QPushButton:hover {
+    background-color: #7260a4;
+}
+
+QPushButton:pressed {
+    background-color: #58468b;
+}
+
+QPushButton:disabled {
+    background-color: #e7e0ec;
+    color: #7a757f;
+}
+
+/* Secondary / Flat Buttons */
+QPushButton#backButton, QPushButton#cancelButton {
+    background-color: transparent;
+    color: #6650a4;
+    border: 1px solid #7a757f;
+}
+
+QPushButton#backButton:hover, QPushButton#cancelButton:hover {
+    background-color: #e8def8;
+    color: #1e192b;
+}
+
+/* Text & Input Controls */
+QLineEdit, QComboBox, QSpinBox {
+    background-color: #fffbff;
+    color: #1c1b1e;
+    border: 1px solid #7a757f;
+    border-radius: 8px;
+    padding: 8px 12px;
+    selection-background-color: #e8ddff;
+    selection-color: #22005d;
+}
+
+QLineEdit:focus, QComboBox:focus, QSpinBox:focus {
+    border: 2px solid #6650a4;
+}
+
+QComboBox::drop-down {
+    border: none;
+    padding-right: 8px;
+}
+
+/* Progress Bar */
+QProgressBar {
+    background-color: #e7e0ec;
+    border-radius: 6px;
+    text-align: center;
+    color: #1c1b1e;
+    height: 12px;
+}
+
+QProgressBar::chunk {
+    background-color: #6650a4;
+    border-radius: 6px;
+}
+
+/* Checkboxes & Radio Buttons */
+QCheckBox, QRadioButton {
+    spacing: 8px;
+    color: #1c1b1e;
+}
+
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #7a757f;
+    border-radius: 4px;
+    background-color: #fffbff;
+}
+
+QRadioButton::indicator {
+    border-radius: 9px;
+}
+
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {
+    background-color: #6650a4;
+    border-color: #6650a4;
+}
+
+/* Scrollbars */
+QScrollBar:vertical {
+    background-color: #f4eff4;
+    width: 8px;
+    margin: 0px;
+    border-radius: 4px;
+}
+
+QScrollBar::handle:vertical {
+    background-color: #cac4cf;
+    border-radius: 4px;
+    min-height: 20px;
+}
+
+QScrollBar::handle:vertical:hover {
+    background-color: #7a757f;
+}
+
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+
+/* Tooltips & Info Cards */
+QToolTip {
+    background-color: #313033;
+    color: #f4eff4;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+}
+
+/* GroupBox / Card Containers */
+QGroupBox {
+    border: 1px solid #cac4cf;
+    border-radius: 12px;
+    margin-top: 12px;
+    padding-top: 12px;
+    font-weight: bold;
+    color: #1c1b1e;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 8px;
+    color: #6650a4;
+}

@@ -1,0 +1,35 @@
+---
+componentName: amelia
+welcomeStyleCalamares: true
+welcomeExpandingLogo: true
+windowExpanding: normal
+windowSize: 960px,620px
+placement: center
+
+strings:
+    productName: "Amelia"
+    shortProductName: "Amelia"
+    version: "Testing"
+    shortVersion: "Testing"
+    versionedName: "Amelia"
+    shortVersionedName: "Amelia"
+    bootloaderEntryName: "Amelia"
+    productUrl: "https://github.com/justlimorina/amelia-genesis"
+    supportUrl: "https://github.com/justlimorina/amelia-genesis"
+    knownIssuesUrl: "https://github.com/justlimorina/amelia-genesis"
+    releaseNotesUrl: "https://github.com/justlimorina/amelia-genesis"
+    donateUrl: "https://github.com/justlimorina/amelia-genesis"
+
+images:
+    productLogo: "amelia_logo.svg"
+    productIcon: "amelia_logo.svg"
+    productWelcome: "amelia-wordmark.svg"
+    productWallpaper: "slide.png"
+
+slideshow: "show.qml"
+
+style:
+    sidebarBackground: "#fffbff"
+    sidebarText: "#1c1b1e"
+    sidebarTextSelect: "#6650a4"
+    sidebarTextHighlight: "#e8ddff"
