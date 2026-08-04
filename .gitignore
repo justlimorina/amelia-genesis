@@ -16,5 +16,19 @@ stage*/
 *.contents
 *.files
 *.packages
+
+# Logs
 *.log
 build.log
+wget-log*
+curl-log*
+
+# Checksums & Signatures
+*.sha256
+*.md5
+*.sig
+
+# Editor & OS temporary files
+*~
+*.swp
+.DS_Store
