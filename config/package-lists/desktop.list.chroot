@@ -1,0 +1,53 @@
+# Kernel & Hardware Support
+linux-image-amd64
+firmware-linux
+firmware-iwlwifi
+firmware-realtek
+firmware-atheros
+firmware-brcm80211
+intel-microcode
+amd64-microcode
+bluez
+
+# Live Boot Components
+live-boot
+live-config
+live-config-systemd
+systemd-sysv
+network-manager
+sudo
+curl
+nano
+locales
+zip
+unzip
+wget
+git
+
+# Desktop Environment & Ecosystem
+gnome-core
+gdm3
+gnome-tweaks
+gnome-disk-utility
+gparted
+file-roller
+dconf-cli
+flatpak
+papirus-icon-theme
+gnome-software-plugin-flatpak
+fastfetch
+
+# Boot & Installer
+plymouth
+plymouth-themes
+calamares
+calamares-settings-debian
+squashfs-tools
+efibootmgr
+grub-efi-amd64-bin
+grub-pc-bin
+qml-module-qtquick2
+qml-module-qtquick-controls2
+
+# Applications
+firefox-esr

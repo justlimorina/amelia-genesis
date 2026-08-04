@@ -1,1 +1,20 @@
 Instructions
+
+# live-build temporary directories and state
+.build/
+chroot/
+binary/
+cache/
+stage*/
+
+# live-build generated images and artifacts
+*.iso
+*.iso.zsync
+*.hybrid.iso
+*.img
+*.tar
+*.contents
+*.files
+*.packages
+*.log
+build.log
