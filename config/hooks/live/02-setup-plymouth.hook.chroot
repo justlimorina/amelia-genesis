@@ -1,17 +1,43 @@
 #!/bin/sh
 set -e
 
-echo "Setting up Plymouth Spinner theme for Amelia..."
+echo "Configuring Amelia Branding for Plymouth & GNOME Settings..."
 
-# Ensure Plymouth spinner theme directory exists
+# Create necessary icon & theme directories
 mkdir -p /usr/share/plymouth/themes/spinner
+mkdir -p /usr/share/pixmaps
+mkdir -p /usr/share/icons/hicolor/scalable/apps
 
-# Copy amelia full white logo if available
+# Ensure SVG logo files are present in system locations
 if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-white.svg" ]; then
-    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/plymouth/themes/spinner/watermark.svg || true
+    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/
+    cp /etc/calamares/branding/amelia/amelia-wordmark.svg /usr/share/icons/hicolor/scalable/apps/
+    cp /etc/calamares/branding/amelia/amelia_logo.svg /usr/share/icons/hicolor/scalable/apps/
+
+    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/pixmaps/
+    cp /etc/calamares/branding/amelia/amelia-wordmark.svg /usr/share/pixmaps/
+    cp /etc/calamares/branding/amelia/amelia_logo.svg /usr/share/pixmaps/
 fi
 
-# Set default plymouth theme to spinner
+# Render PNG assets using rsvg-convert if available
+if command -v rsvg-convert >/dev/null 2>&1; then
+    # Plymouth Spinner Watermark (Width 150px)
+    rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/plymouth/themes/spinner/watermark.png
+    rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/plymouth/themes/spinner/bgrt.png
+    rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/plymouth/debian-logo.png
+    rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/pixmaps/debian-logo.png
+
+    # GNOME Settings About Logo (Width 200px)
+    rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark.svg -o /usr/share/pixmaps/amelia-wordmark.png
+    rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/pixmaps/amelia-wordmark-full-white.png
+fi
+
+# Set default Plymouth theme to Spinner
 if command -v plymouth-set-default-theme >/dev/null 2>&1; then
     plymouth-set-default-theme -R spinner || true
+fi
+
+# Update icon cache
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+    gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 fi

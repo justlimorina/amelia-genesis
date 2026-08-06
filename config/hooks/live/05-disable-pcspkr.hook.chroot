@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+echo "Disabling system beep sounds in Amelia..."
+
+# Disable system bell in inputrc
+if [ -f /etc/inputrc ]; then
+    if ! grep -q "set bell-style none" /etc/inputrc; then
+        echo "set bell-style none" >> /etc/inputrc
+    fi
+fi

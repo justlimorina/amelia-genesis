@@ -42,6 +42,7 @@ plymouth
 plymouth-themes
 calamares
 calamares-settings-debian
+librsvg2-bin
 squashfs-tools
 efibootmgr
 grub-efi-amd64-bin

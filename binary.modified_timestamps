@@ -15,6 +15,13 @@ d binary/boot/grub/x86_64-efi
 f binary/boot/grub/x86_64-efi/grub.cfg
 f binary/boot/grub/efi.img
 f binary/boot/grub/splash.png
+d binary/isolinux
+f binary/isolinux/isolinux.cfg
+f binary/isolinux/live.cfg
+f binary/isolinux/stdmenu.cfg
+f binary/isolinux/menu.cfg
+f binary/isolinux/utilities.cfg
+f binary/isolinux/splash.png
 d binary/.disk
 f binary/.disk/info
 d binary/EFI
