@@ -1,10 +1,10 @@
 [org.gnome.desktop.background]
-picture-uri='file:///usr/share/backgrounds/amelia/amelia-wallpaper.png'
-picture-uri-dark='file:///usr/share/backgrounds/amelia/amelia-wallpaper.png'
+picture-uri='file:///usr/share/backgrounds/amelia/amelia_wallpaper.jpeg'
+picture-uri-dark='file:///usr/share/backgrounds/amelia/amelia_wallpaper.jpeg'
 picture-options='zoom'
 
 [org.gnome.desktop.screensaver]
-picture-uri='file:///usr/share/backgrounds/amelia/amelia-wallpaper.png'
+picture-uri='file:///usr/share/backgrounds/amelia/amelia_wallpaper.jpeg'
 
 [org.gnome.desktop.interface]
 color-scheme='prefer-dark'

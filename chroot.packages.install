@@ -161,7 +161,7 @@ fonts-noto-mono	20201225-6
 fonts-quicksand	0.2016-2.1
 fonts-urw-base35	20200910-9
 fuse3	3.18.2-2
-fwupd	2.1.5-1
+fwupd	2.1.7-2
 fwupd-amd64-signed	1:1.8+5
 fxload	0.0.20081013-4
 gcc-15-base:amd64	15.3.0-2
@@ -205,7 +205,7 @@ gir1.2-ibus-1.0:amd64	1.5.34-1
 gir1.2-javascriptcoregtk-4.1:amd64	2.52.5-1
 gir1.2-json-1.0:amd64	1.10.8+ds-2+b1
 gir1.2-malcontent-0:amd64	0.13.1-5
-gir1.2-mutter-18:amd64	50.2-3
+gir1.2-mutter-18:amd64	50.3-1
 gir1.2-nm-1.0:amd64	1.56.1-1
 gir1.2-nma4-1.0:amd64	1.10.6-8
 gir1.2-notify-0.7:amd64	0.8.8-1+b1
@@ -254,8 +254,8 @@ gnome-remote-desktop	50.2-1
 gnome-session	50.1-3
 gnome-session-bin	50.1-3
 gnome-session-common	50.1-3
-gnome-settings-daemon	50.1-1
-gnome-settings-daemon-common	50.1-1
+gnome-settings-daemon	51~beta-1
+gnome-settings-daemon-common	51~beta-1
 gnome-shell	50.2-3
 gnome-shell-common	50.2-3
 gnome-snapshot	50.0-1
@@ -270,7 +270,7 @@ gnome-text-editor	50.1-2
 gnome-themes-extra-data	3.28-5
 gnome-tour	50.0-1
 gnome-tweaks	49.0-1
-gnome-user-docs	50.2-1
+gnome-user-docs	51~beta-1
 gnome-user-share	48.3-1
 gnome-weather	50.0-1
 gnupg	2.4.9-7
@@ -354,8 +354,8 @@ libabsl20260526:amd64	20260526.0-2
 libaccountsservice0:amd64	23.13.9-8+b2
 libacl1:amd64	2.4.0-1
 libadwaita-1-0:amd64	1.9.2-1
-libao-common	1.2.2+20180113-1.3
-libao4:amd64	1.2.2+20180113-1.3+b1
+libao-common	1.2.2+20180113-1.4
+libao4:amd64	1.2.2+20180113-1.4
 libaom3:amd64	3.14.1-1
 libapache2-mod-dnssd	0.6-7
 libapparmor1:amd64	4.1.7-5
@@ -564,7 +564,7 @@ libfreerdp3-3:amd64	3.30.0+dfsg-1
 libfreetype6:amd64	2.14.3+dfsg-2
 libfribidi0:amd64	1.0.16-5+b1
 libfuse3-4:amd64	3.18.2-2
-libfwupd3:amd64	2.1.5-1
+libfwupd3:amd64	2.1.7-2
 libfyaml0:amd64	0.9.4-1
 libgav1-2:amd64	0.20.0-2+b2
 libgbm1:amd64	26.1.5-1
@@ -875,7 +875,7 @@ libmtdev1t64:amd64	1.1.7-1+b2
 libmtp-common	1.1.23-1
 libmtp-runtime	1.1.23-1
 libmtp9t64:amd64	1.1.23-1
-libmutter-18-0:amd64	50.2-3
+libmutter-18-0:amd64	50.3-1
 libmysofa1:amd64	1.3.5+dfsg-1
 libnautilus-extension4:amd64	50.2.2-2
 libncurses6:amd64	6.6+20260608-2
@@ -893,7 +893,7 @@ libnfnetlink0:amd64	1.0.2-3+b2
 libnfs14:amd64	5.0.2-1.1
 libnftables1:amd64	1.1.6-1+b1
 libnftnl11:amd64	1.3.1-1+b1
-libnghttp2-14:amd64	1.69.0-1
+libnghttp2-14:amd64	1.70.0-1
 libnghttp3-9:amd64	1.17.0-1
 libngtcp2-16:amd64	1.24.0-1
 libngtcp2-crypto-gnutls8:amd64	1.24.0-1
@@ -960,7 +960,6 @@ libpaper-utils	2.2.5-0.4
 libpaper2:amd64	2.2.5-0.4
 libparted-fs-resize0t64:amd64	3.7-1
 libparted2t64:amd64	3.7-1
-libpassim1:amd64	0.1.10-3+b1
 libpcap0.8t64:amd64	1.10.6-2
 libpcaudio0:amd64	1.3-1+b2
 libpci3:amd64	1:3.15.0-2
@@ -996,7 +995,7 @@ libprotobuf-c1:amd64	1.5.1-1+b2
 libprotobuf-lite32t64:amd64	3.21.12-16
 libprotobuf32t64:amd64	3.21.12-16
 libproxy1v5:amd64	0.5.12-1+b1
-libpsl5t64:amd64	0.23.0-1
+libpsl5t64:amd64	0.23.1-1
 libpthreadpool0:amd64	0.0~git20251020.0e6ca13-1.1
 libpulse-mainloop-glib0:amd64	17.0+dfsg1-2.1+b2
 libpulse0:amd64	17.0+dfsg1-2.1+b2
@@ -1014,10 +1013,10 @@ libqmi-utils	1.38.0-1+b1
 libqpdf30:amd64	12.3.2-1+b1
 libqrencode4:amd64	4.1.1-2+b2
 libqrtr-glib0:amd64	1.4.0-1+b1
-libqt5core5t64:amd64	5.15.19+dfsg-3
-libqt5dbus5t64:amd64	5.15.19+dfsg-3
-libqt5gui5t64:amd64	5.15.19+dfsg-3
-libqt5network5t64:amd64	5.15.19+dfsg-3
+libqt5core5t64:amd64	5.15.19+dfsg-4
+libqt5dbus5t64:amd64	5.15.19+dfsg-4
+libqt5gui5t64:amd64	5.15.19+dfsg-4
+libqt5network5t64:amd64	5.15.19+dfsg-4
 libqt5qml5:amd64	5.15.19+dfsg-2
 libqt5qmlmodels5:amd64	5.15.19+dfsg-2
 libqt5qmlworkerscript5:amd64	5.15.19+dfsg-2
@@ -1027,7 +1026,7 @@ libqt5quicktemplates2-5:amd64	5.15.19+dfsg-2
 libqt5svg5:amd64	5.15.19-2
 libqt5waylandclient5:amd64	5.15.19-2
 libqt5waylandcompositor5:amd64	5.15.19-2
-libqt5widgets5t64:amd64	5.15.19+dfsg-3
+libqt5widgets5t64:amd64	5.15.19+dfsg-4
 libqt6core5compat6:amd64	6.10.2-4
 libqt6core6t64:amd64	6.10.2+dfsg-15
 libqt6dbus6:amd64	6.10.2+dfsg-15
@@ -1058,6 +1057,7 @@ librest-1.0-0:amd64	0.10.2-1+b2
 librist4:amd64	0.2.20+dfsg-1
 libroc0.4:amd64	0.4.0+dfsg-6
 librsvg2-2:amd64	2.62.1+dfsg-1
+librsvg2-bin	2.62.1+dfsg-1
 librsvg2-common:amd64	2.62.1+dfsg-1
 librtmp1:amd64	2.6-1
 librubberband3:amd64	4.0.0+dfsg-2
@@ -1356,8 +1356,8 @@ mobile-broadband-provider-info	20251101-1
 modemmanager	1.24.2-2+b1
 mokutil	0.7.2-2
 mount	2.42.2-2
-mutter-common	50.2-3
-mutter-common-bin	50.2-3
+mutter-common	50.3-1
+mutter-common-bin	50.3-1
 nano	9.1-1
 nautilus	50.2.2-2
 nautilus-data	50.2.2-2
@@ -1371,8 +1371,8 @@ nftables	1.1.6-1+b1
 nm-connection-editor	1.36.0-5
 ntfs-3g	1:2026.7.7-2
 ocl-icd-libopencl1:amd64	2.3.4-1+b1
-openssh-client	1:10.4p1-2
-openssh-common	1:10.4p1-2
+openssh-client	1:10.4p1-4
+openssh-common	1:10.4p1-4
 openssl	3.6.3-1
 openssl-provider-legacy	3.6.3-1
 orca	50.2-1
@@ -1415,7 +1415,7 @@ ptyxis	50.1-1
 publicsuffix	20260624.0617-1
 python3	3.14.6-1
 python3-brlapi:amd64	6.9.1+repack-1
-python3-cairo	1.27.0-3
+python3-cairo	1.29.0-1
 python3-certifi	2026.7.22+ds-1
 python3-chardet	5.2.0+dfsg-2
 python3-charset-normalizer	3.4.7-2
@@ -1447,7 +1447,7 @@ qml6-module-qtqml-models:amd64	6.10.2+dfsg-6
 qml6-module-qtqml-workerscript:amd64	6.10.2+dfsg-6
 qml6-module-qtquick:amd64	6.10.2+dfsg-6
 qml6-module-qtquick-window:amd64	6.10.2+dfsg-6
-qt5-gtk-platformtheme:amd64	5.15.19+dfsg-3
+qt5-gtk-platformtheme:amd64	5.15.19+dfsg-4
 qt6-gtk-platformtheme:amd64	6.10.2+dfsg-15
 qt6-qpa-plugins:amd64	6.10.2+dfsg-15
 qt6-svg-plugins:amd64	6.10.2-9
@@ -1483,7 +1483,7 @@ speech-dispatcher-audio-plugins:amd64	0.12.1-4
 speech-dispatcher-espeak-ng	0.12.1-4
 squashfs-tools	1:4.7.5-1
 sqv	1.4.0-1
-ssl-cert	1.1.3
+ssl-cert	1.2.0
 sudo	1.9.17p2-7
 switcheroo-control	3.0-2
 system-config-printer-common	1.5.18-5
@@ -1503,7 +1503,7 @@ tzdata	2026c-1
 ucf	3.0056
 udev	261.2-1
 udisks2	2.11.1-2
-unzip	6.0-29
+unzip	6.0-30
 update-inetd	4.54
 upower	1.91.3-1
 usb-modeswitch	2.6.2-2
