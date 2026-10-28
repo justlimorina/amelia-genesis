@@ -52,7 +52,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Chào mừng đến với hệ điều hành Amelia"
+                        text: "Chào mừng đến với Amelia"
                         font.pixelSize: 20
                         font.bold: true
                         color: "#6650a4"

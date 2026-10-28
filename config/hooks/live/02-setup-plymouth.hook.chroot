@@ -11,28 +11,47 @@ mkdir -p /usr/share/icons/hicolor/scalable/apps
 # Ensure SVG logo files are present in system locations
 if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-white.svg" ]; then
     cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/
+    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg
     cp /etc/calamares/branding/amelia/amelia-wordmark.svg /usr/share/icons/hicolor/scalable/apps/
     cp /etc/calamares/branding/amelia/amelia_logo.svg /usr/share/icons/hicolor/scalable/apps/
 
     cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/pixmaps/
+    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/pixmaps/amelia-wordmark-dark.svg
     cp /etc/calamares/branding/amelia/amelia-wordmark.svg /usr/share/pixmaps/
     cp /etc/calamares/branding/amelia/amelia_logo.svg /usr/share/pixmaps/
+fi
+
+if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-black.svg" ]; then
+    cp /etc/calamares/branding/amelia/amelia-wordmark-full-black.svg /usr/share/icons/hicolor/scalable/apps/
+    cp /etc/calamares/branding/amelia/amelia-wordmark-full-black.svg /usr/share/pixmaps/
+fi
+
+# Ensure dark mode logo is present if pre-copied in chroot
+if [ -f "/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg" ] && [ ! -f "/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg" ]; then
+    cp /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg
+    cp /usr/share/pixmaps/amelia-wordmark-full-white.svg /usr/share/pixmaps/amelia-wordmark-dark.svg
 fi
 
 # Render PNG assets using rsvg-convert if available
 if command -v rsvg-convert >/dev/null 2>&1; then
     # Plymouth Spinner Watermark (Width 150px)
     rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/plymouth/themes/spinner/watermark.png
-    rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/plymouth/themes/spinner/bgrt.png
     rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/plymouth/debian-logo.png
     rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/pixmaps/debian-logo.png
 
     # GNOME Settings About Logo (Width 200px)
-    rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark.svg -o /usr/share/pixmaps/amelia-wordmark.png
+    # Light mode uses amelia-wordmark-full-black, Dark mode uses amelia-wordmark-full-white (amelia-wordmark-dark)
+    if [ -f "/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg" ]; then
+        rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg -o /usr/share/pixmaps/amelia-wordmark.png
+        rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg -o /usr/share/pixmaps/amelia-wordmark-full-black.png
+    else
+        rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark.svg -o /usr/share/pixmaps/amelia-wordmark.png
+    fi
+    rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg -o /usr/share/pixmaps/amelia-wordmark-dark.png
     rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/pixmaps/amelia-wordmark-full-white.png
 fi
 
-# Set default Plymouth theme to Spinner
+# Set default Plymouth theme to Spinner (keeps OEM vendor logo via ACPI BGRT)
 if command -v plymouth-set-default-theme >/dev/null 2>&1; then
     plymouth-set-default-theme -R spinner || true
 fi
