@@ -27,23 +27,30 @@ git
 # Desktop Environment & Ecosystem
 gnome-core
 gdm3
+ptyxis
 gnome-tweaks
 gnome-disk-utility
 gparted
 file-roller
+p7zip-full
+unar
 dconf-cli
 flatpak
 papirus-icon-theme
 gnome-software-plugin-flatpak
 fastfetch
 
-# Boot & Installer
+# Boot, Partition & Installer
 plymouth
 plymouth-themes
 calamares
 calamares-settings-debian
 librsvg2-bin
 squashfs-tools
+dosfstools
+btrfs-progs
+ntfs-3g
+os-prober
 efibootmgr
 grub-efi-amd64-bin
 grub-pc-bin
