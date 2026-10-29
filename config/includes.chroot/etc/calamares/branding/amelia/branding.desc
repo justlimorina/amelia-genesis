@@ -23,7 +23,7 @@ strings:
 images:
     productLogo: "amelia_logo.svg"
     productIcon: "amelia_logo.svg"
-    productWelcome: "amelia-wordmark.svg"
+    productWelcome: "welcome.png"
 
 slideshow: "show.qml"
 

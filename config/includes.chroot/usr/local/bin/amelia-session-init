@@ -1,16 +1,39 @@
 #!/bin/sh
 # Session startup dispatcher for Amelia:
+# - Enforces desktop panel & extension dconf settings on first login
 # - Launches Calamares directly when 'amelia.mode=install' was selected in boot menu
 # - Otherwise opens Amelia Welcome unless disabled by the user
+
+AMELIA_CFG="${XDG_CONFIG_HOME:-$HOME/.config}/amelia"
+INIT_FLAG="${AMELIA_CFG}/dconf-initialized"
+
+if [ ! -f "$INIT_FLAG" ] && command -v dconf >/dev/null 2>&1; then
+    mkdir -p "$AMELIA_CFG"
+    if [ -f "${AMELIA_CFG}/dashtopanel.dconf" ]; then
+        dconf load /org/gnome/shell/extensions/dash-to-panel/ < "${AMELIA_CFG}/dashtopanel.dconf" 2>/dev/null || true
+    elif [ -f /etc/skel/.config/amelia/dashtopanel.dconf ]; then
+        dconf load /org/gnome/shell/extensions/dash-to-panel/ < /etc/skel/.config/amelia/dashtopanel.dconf 2>/dev/null || true
+    fi
+
+    if [ -f "${AMELIA_CFG}/arcmenu.dconf" ]; then
+        dconf load /org/gnome/shell/extensions/arcmenu/ < "${AMELIA_CFG}/arcmenu.dconf" 2>/dev/null || true
+    elif [ -f /etc/skel/.config/amelia/arcmenu.dconf ]; then
+        dconf load /org/gnome/shell/extensions/arcmenu/ < /etc/skel/.config/amelia/arcmenu.dconf 2>/dev/null || true
+    fi
+
+    # Ensure extensions are enabled
+    gsettings set org.gnome.shell enabled-extensions "['dash-to-panel@jderose9.github.com', 'arcmenu@arcmenu.com', 'appindicatorsupport@rgcjonas.gmail.com', 'ding@rastersoft.com', 'add-to-desktop@tommimon.github.com']" 2>/dev/null || true
+
+    touch "$INIT_FLAG"
+fi
 
 if grep -qw "boot=live" /proc/cmdline 2>/dev/null && grep -qw "amelia.mode=install" /proc/cmdline 2>/dev/null; then
     exec /usr/local/bin/install-amelia
 fi
 
-DISABLE_FLAG="${XDG_CONFIG_HOME:-$HOME/.config}/amelia/welcome-disabled"
+DISABLE_FLAG="${AMELIA_CFG}/welcome-disabled"
 if [ ! -f "$DISABLE_FLAG" ] && [ -x /usr/bin/amelia-welcome ]; then
     exec /usr/bin/amelia-welcome
 fi
 
 exit 0
-

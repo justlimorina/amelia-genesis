@@ -1,0 +1,23 @@
+[/]
+apps-show-generic-names=false
+icon-size-apps=-1
+icon-size-buttons=-1
+icon-size-categories=-1
+icon-size-grid={'width': -1, 'height': -1, 'size': -1}
+icon-size-misc=-1
+icon-size-shortcuts=-1
+menu-button-border-radius=(true, 0)
+menu-button-border-width=(true, 5)
+menu-button-icon='/usr/share/pixmaps/amelia-logo-symbolic.svg'
+menu-button-icon-size=29
+menu-button-padding=12
+menu-button-position-offset=10
+menu-layout='windows'
+pinned-apps=[{'id': 'org.gnome.Nautilus.desktop'}, {'id': 'google-chrome.desktop'}, {'id': 'onlyoffice-desktopeditors.desktop'}]
+prefs-visible-page=0
+recently-installed-apps=['ai.opencode.desktop.desktop']
+search-entry-border-radius=(true, 25)
+search-hidden=false
+show-hidden-recent-files=false
+update-notifier-project-version=74
+vert-separator=true

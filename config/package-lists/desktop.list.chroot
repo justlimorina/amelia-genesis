@@ -45,7 +45,49 @@ gir1.2-adw-1
 xdg-utils
 x11-xserver-utils
 
-# Boot, Partition & Installer
+# GNOME Extensions & Integration
+gnome-shell-extension-dash-to-panel
+gnome-shell-extension-appindicator
+gnome-shell-extension-desktop-icons-ng
+gnome-shell-extension-manager
+gir1.2-gmenu-3.0
+gnome-menus
+
+# Audio & PipeWire Ecosystem
+pipewire
+pipewire-audio
+pipewire-pulse
+wireplumber
+libspa-0.2-bluetooth
+
+# Multimedia & Codecs
+ffmpeg
+gstreamer1.0-plugins-base
+gstreamer1.0-plugins-good
+gstreamer1.0-plugins-bad
+gstreamer1.0-plugins-ugly
+gstreamer1.0-libav
+
+# Fonts & Typography (Office & Emoji Compatibility)
+fonts-noto-color-emoji
+fonts-inter
+fonts-liberation2
+fonts-croscore
+fonts-crosextra-carlito
+fonts-crosextra-caladea
+
+# Performance, Power & Memory Optimization
+systemd-zram-generator
+power-profiles-daemon
+
+# Modern CLI Power Tools
+btop
+bat
+eza
+ripgrep
+fd-find
+
+# Boot, Partition, Backup & Installer
 plymouth
 plymouth-themes
 calamares
@@ -65,6 +107,7 @@ grub-efi-amd64-bin
 grub-pc-bin
 qml-module-qtquick2
 qml-module-qtquick-controls2
+timeshift
 
 # Applications
 firefox-esr

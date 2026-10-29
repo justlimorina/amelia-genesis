@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Amelia Welcome — First-boot & Live companion application for Amelia."""
+"""Amelia Welcome — First-boot, Live & Companion Application for Amelia OS."""
 
 import locale
 import os
@@ -40,13 +40,88 @@ OFFICE_MIMES = [
     "application/vnd.oasis.opendocument.presentation",
 ]
 
+POPULAR_APPS = [
+    {
+        "id": "com.google.Chrome",
+        "name": "Google Chrome",
+        "category": "browser",
+        "desc_en": "Fast, secure web browser developed by Google",
+        "desc_vi": "Trình duyệt web tốc độ cao và bảo mật từ Google",
+        "icon": "google-chrome",
+    },
+    {
+        "id": "com.brave.Browser",
+        "name": "Brave Browser",
+        "category": "browser",
+        "desc_en": "Privacy-focused browser with built-in ad and tracker blocking",
+        "desc_vi": "Trình duyệt bảo mật với trình chặn quảng cáo tích hợp",
+        "icon": "brave-browser",
+    },
+    {
+        "id": "com.valvesoftware.Steam",
+        "name": "Steam",
+        "category": "gaming",
+        "desc_en": "Ultimate gaming store & launcher with Proton Windows compatibility",
+        "desc_vi": "Nền tảng chơi game hàng đầu, hỗ trợ Proton chạy game Windows",
+        "icon": "steam",
+    },
+    {
+        "id": "com.heroicgameslauncher.hgl",
+        "name": "Heroic Games Launcher",
+        "category": "gaming",
+        "desc_en": "Open-source games launcher for Epic Games and GOG",
+        "desc_vi": "Trình khởi chạy game mã nguồn mở cho Epic Games và GOG",
+        "icon": "applications-games",
+    },
+    {
+        "id": "com.discordapp.Discord",
+        "name": "Discord",
+        "category": "social",
+        "desc_en": "Voice, video, and text communication platform for communities",
+        "desc_vi": "Nền tảng giao tiếp bằng giọng nói, video và tin nhắn cho cộng đồng",
+        "icon": "discord",
+    },
+    {
+        "id": "org.telegram.desktop",
+        "name": "Telegram Desktop",
+        "category": "social",
+        "desc_en": "Fast, secure cloud-based messaging app with system tray integration",
+        "desc_vi": "Ứng dụng nhắn tin nhanh, bảo mật và đồng bộ đám mây",
+        "icon": "telegram",
+    },
+    {
+        "id": "com.visualstudio.code",
+        "name": "Visual Studio Code",
+        "category": "dev",
+        "desc_en": "Powerful, extensible code editor for modern development",
+        "desc_vi": "Trình soạn thảo mã nguồn mạnh mẽ, hỗ trợ nhiều ngôn ngữ",
+        "icon": "code",
+    },
+    {
+        "id": "com.spotify.Client",
+        "name": "Spotify",
+        "category": "media",
+        "desc_en": "Stream millions of songs and podcasts on your desktop",
+        "desc_vi": "Nghe nhạc và podcast trực tuyến chất lượng cao",
+        "icon": "spotify",
+    },
+    {
+        "id": "org.videolan.VLC",
+        "name": "VLC Media Player",
+        "category": "media",
+        "desc_en": "Universal multimedia player for all video and audio formats",
+        "desc_vi": "Trình phát đa phương tiện phát hầu hết mọi định dạng video/audio",
+        "icon": "vlc",
+    },
+]
+
 STRINGS = {
     "en": {
         "window_title": "Amelia Welcome",
         "lang_toggle": "Tiếng Việt",
         "lang_tooltip": "Switch language to Vietnamese",
-        "hero_subtitle_live": "Welcome to Amelia. Explore in a clean live session, enable USB persistence, or install to your drive.",
-        "hero_subtitle_persist": "Welcome back to Amelia. USB Live Persistence is active — your files and settings stay across reboots.",
+        "hero_subtitle_live": "Welcome to Amelia OS. Explore in a clean live session, enable USB persistence, or install to your drive.",
+        "hero_subtitle_persist": "Welcome back to Amelia OS. USB Live Persistence is active — your files and settings stay across reboots.",
         "hero_subtitle_installed": "Welcome to your newly installed Amelia system. Keep your system updated and install essential apps.",
         "badge_live": "Live Session · Temporary",
         "badge_persist": "USB Persistence · Active",
@@ -54,7 +129,7 @@ STRINGS = {
         "persist_banner": "USB Persistence is active: files, Wi-Fi passwords, and settings remain stored on this USB drive across reboots.",
         "group_system": "System",
         "install_title": "Install Amelia",
-        "install_sub": "Launch the graphical installer (ext4, Btrfs, XFS, and optional LUKS encryption)",
+        "install_sub": "Launch graphical installer (Btrfs subvolumes, ext4, XFS, and optional LUKS encryption)",
         "install_btn": "Install",
         "update_title": "System & App Updates",
         "update_sub": "Check for testing stream updates and Flatpak upgrades in Software",
@@ -66,21 +141,40 @@ STRINGS = {
         "oo_install_btn": "Install",
         "oo_installing_btn": "Installing…",
         "oo_open_btn": "Open",
-        "oo_store_btn": "Software Center",
+        "apps_catalog_title": "1-Click App Store",
+        "apps_catalog_sub": "Quickly install Google Chrome, Steam, VS Code, Discord, Spotify and more",
+        "apps_catalog_btn": "Browse Apps",
         "store_title": "Browse Software Center",
         "store_sub": "Discover applications from Amelia testing repositories and Flathub",
         "store_btn": "Open",
-        "group_guides": "Setup, Hardware & Support",
+        "group_guides": "Setup, Hardware & Desktop Tools",
+        "customize_row_title": "Desktop & Appearance",
+        "customize_row_sub": "Configure Dash to Panel, ArcMenu, accent colors, and extensions",
+        "customize_theme_btn": "Appearance",
+        "customize_ext_btn": "Extensions",
+        "snapshots_row_title": "System Snapshots & Backup",
+        "snapshots_row_sub": "Create instant restore points and backup system state with Timeshift",
+        "snapshots_btn": "Timeshift",
         "persist_row_title": "USB Live Persistence",
         "persist_row_sub": "Save documents and settings on your Live USB across reboots",
         "hw_row_title": "Wi-Fi, Bluetooth & Hardware Drivers",
-        "hw_row_sub": "Connect to wireless networks, configure displays, and check firmware",
+        "hw_row_sub": "Connect to wireless networks, configure displays, and check GPU drivers",
         "bug_row_title": "Report an Issue",
         "bug_row_sub": "Open the Amelia issue tracker or copy system info for troubleshooting",
         "bug_open_btn": "Report",
         "bug_copy_btn": "Copy Info",
         "startup_title": "Show Amelia Welcome on startup",
         "startup_sub": "Automatically open this window when signing in to the desktop",
+        # Apps Page
+        "apps_page_title": "Popular Applications",
+        "apps_browser_group": "Web Browsers",
+        "apps_gaming_group": "Gaming & Gaming Tools",
+        "apps_social_group": "Communication & Social",
+        "apps_dev_group": "Developer & Productivity",
+        "apps_media_group": "Media & Entertainment",
+        "app_install_btn": "Install",
+        "app_installing_btn": "Installing…",
+        "app_open_btn": "Open",
         # Persistence page
         "persist_page_title": "USB Live Persistence",
         "persist_privacy_title": "Privacy & Data Retention Notice",
@@ -103,18 +197,26 @@ STRINGS = {
         "hw_net_title": "Wired & VPN Settings",
         "hw_net_sub": "Configure Ethernet, DNS, proxy, and VPN connections",
         "hw_bt_title": "Bluetooth Devices",
-        "hw_bt_sub": "Pair wireless headphones, keyboards, mice, and controllers",
+        "hw_bt_sub": "Pair wireless headphones, keyboards, mice, and controllers (PipeWire audio with LDAC/AAC)",
         "hw_gpu_group": "Graphics & Firmware",
         "hw_disp_title": "Displays & Refresh Rate",
         "hw_disp_sub": "Configure resolution, fractional scaling, and multi-monitor layout",
+        "hw_nvidia_title": "NVIDIA Graphics Card Detected",
+        "hw_nvidia_sub": "Install official proprietary NVIDIA drivers for 3D acceleration and CUDA",
+        "hw_nvidia_sub_installed": "Official NVIDIA driver is installed and active.",
+        "hw_nvidia_btn": "Install Driver",
+        "hw_nvidia_installed_badge": "Active",
         "hw_drv_title": "Graphics Drivers Note",
-        "hw_drv_sub": "AMD and Intel GPUs work out of the box via Mesa. For older/NVIDIA GPUs with boot glitches, choose 'Amelia (Safe Graphics)' at boot or install nvidia-driver after disk installation.",
+        "hw_drv_sub": "AMD and Intel GPUs work out of the box via Mesa. For NVIDIA GPUs, you can install official drivers via the button above.",
         "open_settings_btn": "Settings",
         # Toasts
         "toast_copied": "System diagnostics copied to clipboard.",
         "toast_oo_start": "Installing ONLYOFFICE from Flathub in the background…",
         "toast_oo_done": "ONLYOFFICE installed and set as default for Office files!",
-        "toast_oo_fail": "Could not install ONLYOFFICE automatically. Try Software Center or check Internet.",
+        "toast_oo_fail": "Could not install ONLYOFFICE automatically. Check internet connection.",
+        "toast_app_start": "Installing {name} from Flathub in the background…",
+        "toast_app_done": "{name} installed successfully!",
+        "toast_app_fail": "Could not install {name}. Check internet connection or try Software Center.",
         "toast_persist_ok": "Initialized persistence.conf! Reboot and select 'Amelia Live with Persistence'.",
         "toast_persist_fail": "No ext4/btrfs/xfs partition labeled 'persistence' found.",
     },
@@ -122,8 +224,8 @@ STRINGS = {
         "window_title": "Chào mừng đến với Amelia",
         "lang_toggle": "English",
         "lang_tooltip": "Chuyển ngôn ngữ sang Tiếng Anh",
-        "hero_subtitle_live": "Chào mừng bạn đến với Amelia. Trải nghiệm phiên Live sạch, bật lưu phiên USB hoặc cài đặt lên ổ cứng.",
-        "hero_subtitle_persist": "Chào mừng trở lại Amelia. Lưu phiên USB (Persistence) đang bật — tệp và thiết lập được giữ lại sau khi khởi động lại.",
+        "hero_subtitle_live": "Chào mừng bạn đến với Amelia OS. Trải nghiệm phiên Live sạch, bật lưu phiên USB hoặc cài đặt lên ổ cứng.",
+        "hero_subtitle_persist": "Chào mừng trở lại Amelia OS. Lưu phiên USB (Persistence) đang bật — tệp và thiết lập được giữ lại sau khi khởi động lại.",
         "hero_subtitle_installed": "Chào mừng bạn đến với hệ thống Amelia đã cài đặt. Hãy kiểm tra cập nhật và cài các ứng dụng thiết yếu.",
         "badge_live": "Phiên Live · Tạm thời",
         "badge_persist": "Lưu phiên USB · Đang bật",
@@ -131,33 +233,52 @@ STRINGS = {
         "persist_banner": "Lưu phiên USB đang hoạt động: tài liệu, mật khẩu Wi-Fi và cài đặt sẽ được lưu lại trên USB này qua các lần khởi động.",
         "group_system": "Hệ thống",
         "install_title": "Cài đặt Amelia lên máy",
-        "install_sub": "Mở trình cài đặt đồ họa Calamares (hỗ trợ ext4, Btrfs, XFS và mã hóa ổ đĩa LUKS)",
+        "install_sub": "Mở trình cài đặt Calamares (hỗ trợ Btrfs subvolumes, ext4, XFS và mã hóa ổ đĩa LUKS)",
         "install_btn": "Cài đặt",
         "update_title": "Cập nhật hệ thống & ứng dụng",
         "update_sub": "Kiểm tra bản cập nhật nhánh testing và ứng dụng Flatpak trong Kho ứng dụng",
         "update_btn": "Cập nhật",
-        "group_apps": "Ứng dụng nên có",
+        "group_apps": "Ứng dụng thiết yếu",
         "oo_title": "ONLYOFFICE Desktop Editors",
         "oo_sub": "Bộ văn phòng tương thích .docx, .xlsx, .pptx · Chạy offline sau khi cài (~587 MiB từ Flathub)",
         "oo_sub_installed": "Đã cài đặt và đặt làm ứng dụng mặc định cho .docx, .xlsx, .pptx",
         "oo_install_btn": "Cài ngay",
         "oo_installing_btn": "Đang cài…",
         "oo_open_btn": "Mở",
-        "oo_store_btn": "Kho ứng dụng",
+        "apps_catalog_title": "Cài đặt ứng dụng 1-Click",
+        "apps_catalog_sub": "Cài nhanh Google Chrome, Steam, VS Code, Discord, Spotify và nhiều hơn nữa",
+        "apps_catalog_btn": "Xem ứng dụng",
         "store_title": "Khám phá Kho ứng dụng",
         "store_sub": "Tìm và cài đặt phần mềm từ kho Amelia testing và Flathub",
         "store_btn": "Mở",
-        "group_guides": "Hướng dẫn, Phần cứng & Hỗ trợ",
+        "group_guides": "Thiết lập, Phần cứng & Công cụ",
+        "customize_row_title": "Giao diện & Tùy biến Desktop",
+        "customize_row_sub": "Tùy biến Dash to Panel, ArcMenu, màu nhấn (Accent color) và các extensions",
+        "customize_theme_btn": "Giao diện",
+        "customize_ext_btn": "Extensions",
+        "snapshots_row_title": "Sao lưu & Khôi phục (Timeshift)",
+        "snapshots_row_sub": "Tạo snapshot hệ thống tức thời, bảo vệ máy an toàn trước khi cập nhật",
+        "snapshots_btn": "Timeshift",
         "persist_row_title": "Lưu phiên làm việc USB (Persistence)",
         "persist_row_sub": "Giữ lại tài liệu và thiết lập trên USB Live sau khi khởi động lại",
         "hw_row_title": "Wi-Fi, Bluetooth & Trình điều khiển",
-        "hw_row_sub": "Kết nối mạng không dây, chỉnh màn hình và kiểm tra firmware phần cứng",
+        "hw_row_sub": "Kết nối mạng không dây, chỉnh màn hình và kiểm tra driver card đồ họa",
         "bug_row_title": "Báo lỗi & Góp ý",
         "bug_row_sub": "Mở trang theo dõi lỗi của Amelia hoặc sao chép thông tin hệ thống",
         "bug_open_btn": "Báo lỗi",
         "bug_copy_btn": "Chép cấu hình",
         "startup_title": "Mở Amelia Welcome khi khởi động",
         "startup_sub": "Tự động hiển thị cửa sổ này khi đăng nhập vào màn hình chính",
+        # Apps Page
+        "apps_page_title": "Ứng dụng phổ biến",
+        "apps_browser_group": "Trình duyệt Web",
+        "apps_gaming_group": "Chơi Game & Công cụ Game",
+        "apps_social_group": "Liên lạc & Mạng xã hội",
+        "apps_dev_group": "Lập trình & Năng suất",
+        "apps_media_group": "Giải trí & Đa phương tiện",
+        "app_install_btn": "Cài đặt",
+        "app_installing_btn": "Đang cài…",
+        "app_open_btn": "Mở",
         # Persistence page
         "persist_page_title": "Lưu phiên làm việc USB",
         "persist_privacy_title": "Lưu ý quan trọng về dữ liệu riêng tư",
@@ -180,18 +301,26 @@ STRINGS = {
         "hw_net_title": "Mạng dây & VPN",
         "hw_net_sub": "Thiết lập Ethernet, DNS, proxy và kết nối VPN",
         "hw_bt_title": "Thiết bị Bluetooth",
-        "hw_bt_sub": "Ghép nối tai nghe, bàn phím, chuột và tay cầm không dây",
+        "hw_bt_sub": "Ghép nối tai nghe, bàn phím, chuột và tay cầm không dây (PipeWire âm thanh LDAC/AAC)",
         "hw_gpu_group": "Đồ họa & Phần cứng",
         "hw_disp_title": "Màn hình & Tần số quét",
         "hw_disp_sub": "Chỉnh độ phân giải, tỷ lệ hiển thị và đa màn hình",
+        "hw_nvidia_title": "Phát hiện Card đồ họa NVIDIA",
+        "hw_nvidia_sub": "Cài đặt driver NVIDIA chính thức để tối đa hiệu năng 3D và hỗ trợ CUDA",
+        "hw_nvidia_sub_installed": "Driver NVIDIA chính thức đã được cài đặt và đang hoạt động.",
+        "hw_nvidia_btn": "Cài Driver",
+        "hw_nvidia_installed_badge": "Đã bật",
         "hw_drv_title": "Lưu ý về card đồ họa (GPU)",
-        "hw_drv_sub": "GPU Intel và AMD hoạt động sẵn qua Mesa. Nếu máy dùng GPU rời gặp lỗi hiển thị khi boot, hãy chọn 'Amelia (Safe Graphics)' ở menu boot hoặc cài gói nvidia-driver sau khi cài lên ổ cứng.",
+        "hw_drv_sub": "GPU Intel và AMD hoạt động sẵn qua Mesa. Với GPU NVIDIA, bạn có thể bấm nút cài đặt driver ở trên.",
         "open_settings_btn": "Cài đặt",
         # Toasts
         "toast_copied": "Đã sao chép thông tin hệ thống vào bộ nhớ tạm.",
-        "toast_oo_start": "Đang tải và cài đặt ONLYOFFICE từ Flathub trong nền…",
+        "toast_oo_start": "Đang cài đặt ONLYOFFICE từ Flathub trong nền…",
         "toast_oo_done": "Đã cài xong ONLYOFFICE và đặt làm mặc định cho tệp văn phòng!",
-        "toast_oo_fail": "Không thể cài tự động ONLYOFFICE. Hãy kiểm tra mạng hoặc mở Kho ứng dụng.",
+        "toast_oo_fail": "Không thể cài đặt ONLYOFFICE. Hãy kiểm tra kết nối mạng.",
+        "toast_app_start": "Đang cài đặt {name} từ Flathub trong nền…",
+        "toast_app_done": "Đã cài đặt thành công {name}!",
+        "toast_app_fail": "Không thể cài đặt {name}. Hãy kiểm tra kết nối mạng hoặc mở Kho ứng dụng.",
         "toast_persist_ok": "Đã khởi tạo persistence.conf! Hãy khởi động lại và chọn 'Amelia Live with Persistence'.",
         "toast_persist_fail": "Chưa tìm thấy phân vùng ext4/btrfs/xfs mang nhãn 'persistence'.",
     },
@@ -250,22 +379,26 @@ def detect_initial_lang() -> str:
     return "vi" if env_lang.lower().startswith("vi") else "en"
 
 
-def is_onlyoffice_installed() -> bool:
+def is_flatpak_app_installed(app_id: str) -> bool:
     exports = [
-        Path("/var/lib/flatpak/exports/share/applications/org.onlyoffice.desktopeditors.desktop"),
-        Path.home() / ".local/share/flatpak/exports/share/applications/org.onlyoffice.desktopeditors.desktop",
+        Path(f"/var/lib/flatpak/exports/share/applications/{app_id}.desktop"),
+        Path.home() / f".local/share/flatpak/exports/share/applications/{app_id}.desktop",
     ]
     if any(p.exists() for p in exports):
         return True
     if shutil.which("flatpak"):
         res = subprocess.run(
-            ["flatpak", "info", ONLYOFFICE_ID],
+            ["flatpak", "info", app_id],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
             check=False,
         )
         return res.returncode == 0
     return False
+
+
+def is_onlyoffice_installed() -> bool:
+    return is_flatpak_app_installed(ONLYOFFICE_ID)
 
 
 def apply_onlyoffice_mime_defaults() -> None:
@@ -281,6 +414,25 @@ def apply_onlyoffice_mime_defaults() -> None:
         )
 
 
+def detect_nvidia_gpu() -> bool:
+    try:
+        proc = subprocess.run(["lspci"], stdout=subprocess.PIPE, text=True, check=False)
+        for line in proc.stdout.splitlines():
+            line_l = line.lower()
+            if ("vga" in line_l or "3d" in line_l or "display" in line_l) and "nvidia" in line_l:
+                return True
+    except OSError:
+        pass
+    return False
+
+
+def is_nvidia_driver_active() -> bool:
+    if shutil.which("nvidia-smi"):
+        res = subprocess.run(["nvidia-smi"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, check=False)
+        return res.returncode == 0
+    return False
+
+
 def disable_flag_path() -> Path:
     cfg = Path(os.environ.get("XDG_CONFIG_HOME", str(Path.home() / ".config")))
     return cfg / "amelia" / "welcome-disabled"
@@ -289,13 +441,14 @@ def disable_flag_path() -> Path:
 class AmeliaWelcomeWindow(Adw.ApplicationWindow):
     def __init__(self, app: Adw.Application) -> None:
         super().__init__(application=app)
-        self.set_default_size(680, 660)
-        self.set_size_request(360, 480)
+        self.set_default_size(700, 720)
+        self.set_size_request(380, 520)
 
         self.boot_mode = detect_boot_mode()
         self.lang = detect_initial_lang()
         self.oo_installing = False
         self.oo_installed = is_onlyoffice_installed()
+        self.installing_apps: set[str] = set()
 
         self.style_mgr = Adw.StyleManager.get_default()
         self.style_mgr.connect("notify::dark", self._on_theme_changed)
@@ -310,7 +463,7 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
         self._sync_theme_visuals()
 
     def t(self, key: str) -> str:
-        return STRINGS[self.lang][key]
+        return STRINGS[self.lang].get(key, key)
 
     def _load_css(self) -> None:
         provider = Gtk.CssProvider()
@@ -322,7 +475,6 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
             )
 
     def _build_ui(self) -> None:
-        # Clear nav stack and rebuild cleanly on language switch
         main_page = self._create_main_page()
         self.nav_view.replace([main_page])
         self.set_title(self.t("window_title"))
@@ -416,9 +568,10 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
             sys_group.add(upd_row)
         pref_page.add(sys_group)
 
-        # 2. Essential Apps Group (ONLYOFFICE + Software Center)
+        # 2. Essential Apps Group
         apps_group = Adw.PreferencesGroup(title=self.t("group_apps"))
 
+        # ONLYOFFICE Quick Action
         self.oo_row = Adw.ActionRow(
             title=self.t("oo_title"),
             subtitle=self.t("oo_sub_installed") if self.oo_installed else self.t("oo_sub"),
@@ -433,15 +586,6 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
         if self.oo_installing:
             self.oo_spinner.start()
         oo_btn_box.append(self.oo_spinner)
-
-        if not self.oo_installed:
-            self.oo_store_btn = Gtk.Button(label=self.t("oo_store_btn"))
-            self.oo_store_btn.set_valign(Gtk.Align.CENTER)
-            self.oo_store_btn.connect(
-                "clicked",
-                lambda *_: self._spawn(["gnome-software", f"--details={ONLYOFFICE_ID}"]),
-            )
-            oo_btn_box.append(self.oo_store_btn)
 
         self.oo_primary_btn = Gtk.Button(
             label=self.t("oo_open_btn")
@@ -458,6 +602,21 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
         self.oo_row.add_suffix(oo_btn_box)
         apps_group.add(self.oo_row)
 
+        # 1-Click App Store Navigator
+        cat_row = Adw.ActionRow(
+            title=self.t("apps_catalog_title"),
+            subtitle=self.t("apps_catalog_sub"),
+            activatable=True,
+        )
+        cat_row.add_prefix(Gtk.Image.new_from_icon_name("software-properties-symbolic"))
+        cat_btn = Gtk.Button(label=self.t("apps_catalog_btn"))
+        cat_btn.set_valign(Gtk.Align.CENTER)
+        cat_btn.connect("clicked", lambda *_: self.nav_view.push(self._create_apps_page()))
+        cat_row.add_suffix(cat_btn)
+        cat_row.set_activatable_widget(cat_btn)
+        apps_group.add(cat_row)
+
+        # Browse Full Software Center
         store_row = Adw.ActionRow(
             title=self.t("store_title"),
             subtitle=self.t("store_sub"),
@@ -472,8 +631,41 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
 
         pref_page.add(apps_group)
 
-        # 3. Guides & Support Group
+        # 3. Desktop Tools & Guides Group
         guides_group = Adw.PreferencesGroup(title=self.t("group_guides"))
+
+        # Desktop Customization Row
+        cust_row = Adw.ActionRow(
+            title=self.t("customize_row_title"),
+            subtitle=self.t("customize_row_sub"),
+        )
+        cust_row.add_prefix(Gtk.Image.new_from_icon_name("preferences-desktop-theme-symbolic"))
+        cust_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        cust_box.set_valign(Gtk.Align.CENTER)
+
+        theme_btn = Gtk.Button(label=self.t("customize_theme_btn"))
+        theme_btn.connect("clicked", lambda *_: self._spawn(["gnome-control-center", "appearance"]))
+        cust_box.append(theme_btn)
+
+        ext_btn = Gtk.Button(label=self.t("customize_ext_btn"))
+        ext_btn.connect("clicked", lambda *_: self._spawn(["extension-manager"]))
+        cust_box.append(ext_btn)
+
+        cust_row.add_suffix(cust_box)
+        guides_group.add(cust_row)
+
+        # System Snapshots (Timeshift)
+        snap_row = Adw.ActionRow(
+            title=self.t("snapshots_row_title"),
+            subtitle=self.t("snapshots_row_sub"),
+        )
+        snap_row.add_prefix(Gtk.Image.new_from_icon_name("document-save-symbolic"))
+        snap_btn = Gtk.Button(label=self.t("snapshots_btn"))
+        snap_btn.set_valign(Gtk.Align.CENTER)
+        snap_btn.connect("clicked", lambda *_: self._spawn(["pkexec", "timeshift-gtk"]))
+        snap_row.add_suffix(snap_btn)
+        snap_row.set_activatable_widget(snap_btn)
+        guides_group.add(snap_row)
 
         if self.boot_mode in ("live", "persistence"):
             persist_row = Adw.ActionRow(
@@ -529,6 +721,131 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
 
         toolbar_view.set_content(pref_page)
         return Adw.NavigationPage.new(toolbar_view, self.t("window_title"))
+
+    def _create_apps_page(self) -> Adw.NavigationPage:
+        toolbar_view = Adw.ToolbarView()
+        toolbar_view.add_top_bar(Adw.HeaderBar())
+
+        page = Adw.PreferencesPage()
+
+        groups = {
+            "browser": Adw.PreferencesGroup(title=self.t("apps_browser_group")),
+            "gaming": Adw.PreferencesGroup(title=self.t("apps_gaming_group")),
+            "social": Adw.PreferencesGroup(title=self.t("apps_social_group")),
+            "dev": Adw.PreferencesGroup(title=self.t("apps_dev_group")),
+            "media": Adw.PreferencesGroup(title=self.t("apps_media_group")),
+        }
+
+        for app_info in POPULAR_APPS:
+            cat = app_info.get("category", "dev")
+            group = groups.get(cat, groups["dev"])
+
+            app_id = app_info["id"]
+            name = app_info["name"]
+            desc = app_info[f"desc_{self.lang}"]
+
+            row = Adw.ActionRow(title=name, subtitle=desc)
+            row.add_prefix(Gtk.Image.new_from_icon_name(app_info["icon"]))
+
+            is_installed = is_flatpak_app_installed(app_id)
+            is_installing = app_id in self.installing_apps
+
+            btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+            btn_box.set_valign(Gtk.Align.CENTER)
+
+            spinner = Gtk.Spinner()
+            spinner.set_visible(is_installing)
+            if is_installing:
+                spinner.start()
+            btn_box.append(spinner)
+
+            action_btn = Gtk.Button()
+            action_btn.set_valign(Gtk.Align.CENTER)
+
+            if is_installed:
+                action_btn.set_label(self.t("app_open_btn"))
+                action_btn.connect("clicked", lambda _b, aid=app_id: self._spawn(["flatpak", "run", aid]))
+            elif is_installing:
+                action_btn.set_label(self.t("app_installing_btn"))
+                action_btn.set_sensitive(False)
+            else:
+                action_btn.set_label(self.t("app_install_btn"))
+                action_btn.add_css_class("suggested-action")
+                action_btn.connect("clicked", lambda _b, aid=app_id, aname=name: self._on_install_app_clicked(aid, aname))
+
+            btn_box.append(action_btn)
+            row.add_suffix(btn_box)
+            group.add(row)
+
+        for group in groups.values():
+            page.add(group)
+
+        toolbar_view.set_content(page)
+        return Adw.NavigationPage.new(toolbar_view, self.t("apps_page_title"))
+
+    def _on_install_app_clicked(self, app_id: str, app_name: str) -> None:
+        if app_id in self.installing_apps:
+            return
+
+        self.installing_apps.add(app_id)
+        self._show_toast(self.t("toast_app_start").format(name=app_name))
+        self.nav_view.replace([self._create_main_page(), self._create_apps_page()])
+
+        def worker() -> None:
+            rc = 1
+            if shutil.which("flatpak"):
+                proc = subprocess.run(
+                    ["flatpak", "install", "--noninteractive", "-y", "flathub", app_id],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    check=False,
+                )
+                rc = proc.returncode
+                if rc != 0:
+                    subprocess.run(
+                        [
+                            "flatpak",
+                            "remote-add",
+                            "--user",
+                            "--if-not-exists",
+                            "flathub",
+                            "/etc/flatpak/remotes.d/flathub.flatpakrepo",
+                        ],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                        check=False,
+                    )
+                    proc2 = subprocess.run(
+                        [
+                            "flatpak",
+                            "install",
+                            "--user",
+                            "--noninteractive",
+                            "-y",
+                            "flathub",
+                            app_id,
+                        ],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.STDOUT,
+                        text=True,
+                        check=False,
+                    )
+                    rc = proc2.returncode
+
+            GLib.idle_add(self._on_app_install_finished, app_id, app_name, rc == 0)
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _on_app_install_finished(self, app_id: str, app_name: str, ok: bool) -> bool:
+        self.installing_apps.discard(app_id)
+        if ok:
+            self._show_toast(self.t("toast_app_done").format(name=app_name))
+        else:
+            self._show_toast(self.t("toast_app_fail").format(name=app_name))
+
+        self.nav_view.replace([self._create_main_page(), self._create_apps_page()])
+        return GLib.SOURCE_REMOVE
 
     def _create_persistence_page(self) -> Adw.NavigationPage:
         toolbar_view = Adw.ToolbarView()
@@ -619,6 +936,35 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
         disp_row.set_activatable_widget(disp_btn)
         gpu_group.add(disp_row)
 
+        # NVIDIA GPU Detection & 1-Click Driver Installer
+        if detect_nvidia_gpu():
+            nv_active = is_nvidia_driver_active()
+            nv_row = Adw.ActionRow(
+                title=self.t("hw_nvidia_title"),
+                subtitle=self.t("hw_nvidia_sub_installed") if nv_active else self.t("hw_nvidia_sub"),
+            )
+            nv_row.add_prefix(Gtk.Image.new_from_icon_name("video-display-symbolic"))
+            if nv_active:
+                badge = Gtk.Label(label=self.t("hw_nvidia_installed_badge"))
+                badge.add_css_class("amelia-badge")
+                badge.set_valign(Gtk.Align.CENTER)
+                nv_row.add_suffix(badge)
+            else:
+                nv_btn = Gtk.Button(label=self.t("hw_nvidia_btn"))
+                nv_btn.set_valign(Gtk.Align.CENTER)
+                nv_btn.add_css_class("suggested-action")
+                nv_cmd = (
+                    "ptyxis -- pkexec bash -c '"
+                    "echo \"=== Installing NVIDIA Proprietary Driver & Firmware ===\"; "
+                    "apt update && apt install -y nvidia-driver firmware-misc-nonfree; "
+                    "echo -e \"\\n=== Installation Finished! Please reboot your computer. ===\"; "
+                    "read -p \"Press Enter to close...\"'"
+                )
+                nv_btn.connect("clicked", lambda *_: self._spawn(["sh", "-c", nv_cmd]))
+                nv_row.add_suffix(nv_btn)
+                nv_row.set_activatable_widget(nv_btn)
+            gpu_group.add(nv_row)
+
         drv_row = Adw.ActionRow(
             title=self.t("hw_drv_title"),
             subtitle=self.t("hw_drv_sub"),
@@ -695,7 +1041,6 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
                 )
                 rc = proc.returncode
                 if rc != 0:
-                    # Fallback to user installation if system-wide polkit was dismissed
                     proc_user = subprocess.run(
                         [
                             "flatpak",
@@ -807,4 +1152,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
