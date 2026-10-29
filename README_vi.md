@@ -32,6 +32,9 @@
     <a href="https://calamares.io/">
       <img src="https://img.shields.io/badge/Tr%C3%ACnh%20c%C3%A0i%20%C4%91%E1%BA%B7t-Calamares-5c3b88?style=flat" alt="Calamares">
     </a>
+    <a href="LICENSE">
+      <img src="https://img.shields.io/badge/Gi%E1%BA%A5y%20ph%C3%A9p-GPL--3.0-blue.svg?style=flat" alt="GPL-3.0 License">
+    </a>
     <a href="https://github.com/justlimorina/amelia-genesis/stargazers">
       <img src="https://img.shields.io/github/stars/justlimorina/amelia-genesis?style=flat&color=yellow" alt="Stars">
     </a>
@@ -163,6 +166,7 @@ Mọi sự đóng góp từ cộng đồng đều được hoan nghênh nhiệt 
 
 ## 📄 Giấy phép
 
-Các tập lệnh và cấu hình của dự án Amelia Linux được phát hành theo Giấy phép MIT. Các gói phần mềm nền tảng, hình nền và thành phần phụ trợ tuân theo giấy phép gốc tương ứng của các dự án nguồn mở upstream.
+Các tập lệnh, tệp cấu hình và công cụ phát triển riêng của Amelia Linux (bao gồm Amelia Welcome) được phát hành theo [Giấy phép Công cộng GNU v3.0 (GPL-3.0)](LICENSE). Các gói phần mềm upstream của Debian, hình ảnh và thành phần từ bên thứ ba tuân theo giấy phép gốc tương ứng.
 
 <p align="right">(<a href="#readme-top">lên đầu trang ↑</a>)</p>
+
