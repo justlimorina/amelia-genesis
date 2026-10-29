@@ -15,9 +15,9 @@ sudo lb config \
     --distribution testing \
     --architectures amd64 \
     --archive-areas "main contrib non-free non-free-firmware" \
-    --image-name "amelia-linux-testing" \
+    --image-name "amelia-linux-charlotte" \
     --iso-volume "Amelia Linux" \
-    --iso-application "Amelia Linux" \
+    --iso-application "Amelia Linux: Charlotte" \
     --binary-images iso-hybrid \
     --bootloaders "grub-efi,syslinux" \
     --bootappend-live "boot=live components quiet splash hostname=amelia username=user user-fullname=Amelia locales=en_US.UTF-8 timezone=Asia/Ho_Chi_Minh"

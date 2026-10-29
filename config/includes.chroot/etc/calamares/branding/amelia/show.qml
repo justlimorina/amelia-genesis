@@ -52,7 +52,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Chào mừng đến với Amelia Linux"
+                        text: "Chào mừng đến với Amelia Linux: Charlotte"
                         font.pixelSize: 20
                         font.bold: true
                         color: "#6650a4"

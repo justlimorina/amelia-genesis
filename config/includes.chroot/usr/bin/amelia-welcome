@@ -120,12 +120,12 @@ STRINGS = {
         "window_title": "Amelia Welcome",
         "lang_toggle": "Tiếng Việt",
         "lang_tooltip": "Switch language to Vietnamese",
-        "hero_subtitle_live": "Welcome to Amelia Linux. Explore in a clean live session, enable USB persistence, or install to your drive.",
-        "hero_subtitle_persist": "Welcome back to Amelia Linux. USB Live Persistence is active — your files and settings stay across reboots.",
-        "hero_subtitle_installed": "Welcome to your newly installed Amelia Linux system. Keep your system updated and install essential apps.",
-        "badge_live": "Live Session · Temporary",
-        "badge_persist": "USB Persistence · Active",
-        "badge_installed": "Installed System · testing",
+        "hero_subtitle_live": "Welcome to Amelia Linux: Charlotte. Explore in a clean live session, enable USB persistence, or install to your drive.",
+        "hero_subtitle_persist": "Welcome back to Amelia Linux: Charlotte. USB Live Persistence is active — your files and settings stay across reboots.",
+        "hero_subtitle_installed": "Welcome to your newly installed Amelia Linux: Charlotte system. Keep your system updated and install essential apps.",
+        "badge_live": "Live Session · Charlotte",
+        "badge_persist": "USB Persistence · Charlotte",
+        "badge_installed": "Installed System · Charlotte",
         "persist_banner": "USB Persistence is active: files, Wi-Fi passwords, and settings remain stored on this USB drive across reboots.",
         "group_system": "System",
         "install_title": "Install Amelia Linux",
@@ -224,12 +224,12 @@ STRINGS = {
         "window_title": "Chào mừng đến với Amelia Linux",
         "lang_toggle": "English",
         "lang_tooltip": "Chuyển ngôn ngữ sang Tiếng Anh",
-        "hero_subtitle_live": "Chào mừng bạn đến với Amelia Linux. Trải nghiệm phiên Live sạch, bật lưu phiên USB hoặc cài đặt lên ổ cứng.",
-        "hero_subtitle_persist": "Chào mừng trở lại Amelia Linux. Lưu phiên USB (Persistence) đang bật — tệp và thiết lập được giữ lại sau khi khởi động lại.",
-        "hero_subtitle_installed": "Chào mừng bạn đến với hệ thống Amelia Linux đã cài đặt. Hãy kiểm tra cập nhật và cài các ứng dụng thiết yếu.",
-        "badge_live": "Phiên Live · Tạm thời",
-        "badge_persist": "Lưu phiên USB · Đang bật",
-        "badge_installed": "Đã cài đặt · testing",
+        "hero_subtitle_live": "Chào mừng bạn đến với Amelia Linux: Charlotte. Trải nghiệm phiên Live sạch, bật lưu phiên USB hoặc cài đặt lên ổ cứng.",
+        "hero_subtitle_persist": "Chào mừng trở lại Amelia Linux: Charlotte. Lưu phiên USB (Persistence) đang bật — tệp và thiết lập được giữ lại sau khi khởi động lại.",
+        "hero_subtitle_installed": "Chào mừng bạn đến với hệ thống Amelia Linux: Charlotte đã cài đặt. Hãy kiểm tra cập nhật và cài các ứng dụng thiết yếu.",
+        "badge_live": "Phiên Live · Charlotte",
+        "badge_persist": "Lưu phiên USB · Charlotte",
+        "badge_installed": "Đã cài đặt · Charlotte",
         "persist_banner": "Lưu phiên USB đang hoạt động: tài liệu, mật khẩu Wi-Fi và cài đặt sẽ được lưu lại trên USB này qua các lần khởi động.",
         "group_system": "Hệ thống",
         "install_title": "Cài đặt Amelia Linux lên máy",
@@ -1109,8 +1109,19 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
         return GLib.SOURCE_REMOVE
 
     def _on_copy_sysinfo(self, *_args: object) -> None:
+        os_rel: dict[str, str] = {}
+        try:
+            for line in Path("/etc/os-release").read_text(encoding="utf-8", errors="ignore").splitlines():
+                if "=" in line:
+                    k, v = line.split("=", 1)
+                    os_rel[k.strip()] = v.strip().strip('"')
+        except OSError:
+            pass
+        pretty = os_rel.get("PRETTY_NAME", "Amelia Linux: Charlotte")
+        codename = os_rel.get("VERSION_CODENAME", "charlotte")
+        deb_codename = os_rel.get("DEBIAN_CODENAME", "testing")
         info_lines = [
-            "System: Amelia Linux (testing)",
+            f"System: {pretty} (codename={codename}, debian_codename={deb_codename})",
             f"Mode: {self.boot_mode}",
             f"Kernel: {platform.release()}",
             f"Arch: {platform.machine()}",

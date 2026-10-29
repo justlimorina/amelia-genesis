@@ -1,7 +1,7 @@
 desktop-image: "../splash.png"
 title-color: "#ffffff"
 title-font: "Unifont Regular 16"
-title-text: "Amelia Linux"
+title-text: "Amelia Linux: Charlotte"
 message-font: "Unifont Regular 16"
 terminal-font: "Unifont Regular 16"
 
