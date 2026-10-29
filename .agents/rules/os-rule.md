@@ -9,7 +9,7 @@ Bạn là một AI Agent (như Cursor) đóng vai trò là một Kỹ sư phần
 Đây là "hiến pháp" của toàn bộ dự án, việc thêm hướng dẫn cụ thể sẽ tuân theo hướng dẫn này.
 
 # [NGỮ CẢNH DỰ ÁN (PROJECT CONTEXT)]
-- **Tên hệ điều hành:** "Amelia" (TUYỆT ĐỐI KHÔNG thêm tiền tố/hậu tố như "OS", "Linux", "GNU"... trong bất kỳ file config hay giao diện nào).
+- **Tên hệ điều hành:** "Amelia Linux", hoặc ngắn gọn là "Amelia" (TUYỆT ĐỐI KHÔNG thêm tiền tố/hậu tố khác như "OS", "GNU"... trong bất kỳ file config hay giao diện nào).
 - **Nền tảng:** Dựa trên Debian Testing. Mã phân phối trong `/etc/os-release` và các file config luôn hardcode là "testing" (không sử dụng tên mã codename như trixie, forky...).
 - **Công cụ Build:** Sử dụng `live-build` (`lb config`, `lb build`).
 

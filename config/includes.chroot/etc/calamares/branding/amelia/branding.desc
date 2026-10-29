@@ -7,13 +7,13 @@ windowSize: 960px,620px
 placement: center
 
 strings:
-    productName: "Amelia"
-    shortProductName: "Amelia"
+    productName: "Amelia Linux"
+    shortProductName: "Amelia Linux"
     version: "Testing"
     shortVersion: "Testing"
-    versionedName: "Amelia"
-    shortVersionedName: "Amelia"
-    bootloaderEntryName: "Amelia"
+    versionedName: "Amelia Linux"
+    shortVersionedName: "Amelia Linux"
+    bootloaderEntryName: "Amelia Linux"
     productUrl: "https://github.com/justlimorina/amelia-genesis"
     supportUrl: "https://github.com/justlimorina/amelia-genesis"
     knownIssuesUrl: "https://github.com/justlimorina/amelia-genesis"

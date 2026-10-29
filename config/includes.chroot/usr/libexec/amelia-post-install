@@ -44,9 +44,9 @@ if [ -f /etc/crypttab ] && grep -Eqv '^[[:space:]]*(#|$)' /etc/crypttab; then
     chmod 0600 /crypto_keyfile.bin 2>/dev/null || true
 fi
 
-# 5. Re-verify GRUB menu uses pure "Amelia" branding and OS prober is enabled
-if [ -f /etc/grub.d/10_linux ] && ! grep -q 'Amelia|Ubuntu' /etc/grub.d/10_linux; then
-    sed -i 's/Ubuntu|\*GNU\/Linux)/Amelia|Ubuntu|*GNU\/Linux)/' /etc/grub.d/10_linux || true
+# 5. Re-verify GRUB menu uses exact "Amelia Linux" branding and OS prober is enabled
+if [ -f /etc/grub.d/10_linux ] && ! grep -q 'Amelia\*|Ubuntu' /etc/grub.d/10_linux; then
+    sed -i 's/Ubuntu|\*GNU\/Linux)/Amelia*|Ubuntu|*GNU\/Linux)/' /etc/grub.d/10_linux || true
 fi
 if command -v update-grub >/dev/null 2>&1 && [ -f /boot/grub/grub.cfg ]; then
     update-grub || true

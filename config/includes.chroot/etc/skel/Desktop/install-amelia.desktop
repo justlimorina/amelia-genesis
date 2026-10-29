@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Name=Install Amelia
-Name[vi]=Cài đặt Amelia
-Comment=Install Amelia to your drive
-Comment[vi]=Cài đặt Amelia lên ổ cứng của bạn
+Name=Install Amelia Linux
+Name[vi]=Cài đặt Amelia Linux
+Comment=Install Amelia Linux to your drive
+Comment[vi]=Cài đặt Amelia Linux lên ổ cứng của bạn
 Exec=/usr/local/bin/install-amelia
 Icon=amelia_logo
 Terminal=false

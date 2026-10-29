@@ -1,14 +1,13 @@
 [Desktop Entry]
 Type=Application
 Name=Amelia Welcome
-Name[vi]=Chào mừng Amelia
-Comment=Get started with Amelia, essential apps, USB persistence, and drivers
-Comment[vi]=Bắt đầu với Amelia, ứng dụng thiết yếu, lưu phiên USB và trình điều khiển
+Name[vi]=Chào mừng Amelia Linux
+Comment=Get started with Amelia Linux, essential apps, USB persistence, and drivers
+Comment[vi]=Bắt đầu với Amelia Linux, ứng dụng thiết yếu, lưu phiên USB và trình điều khiển
 Exec=/usr/bin/amelia-welcome
 Icon=amelia_logo
 Terminal=false
 Categories=System;Utility;
-Keywords=Amelia;Welcome;Install;Persistence;Drivers;ONLYOFFICE;
+Keywords=Amelia;Amelia Linux;Welcome;Install;Persistence;Drivers;ONLYOFFICE;
 StartupNotify=true
 StartupWMClass=org.amelia.Welcome
-

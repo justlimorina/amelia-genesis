@@ -1,5 +1,5 @@
 label live-@FLAVOUR@
-	menu label ^Try Amelia (Live Session)
+	menu label ^Try Amelia Linux (Live Session)
 	menu default
 	linux @LINUX@
 	initrd @INITRD@
@@ -9,7 +9,7 @@ label live-@FLAVOUR@
 	ENDTEXT
 
 label live-@FLAVOUR@-persistence
-	menu label Amelia Live with ^Persistence
+	menu label Amelia Linux Live with ^Persistence
 	linux @LINUX@
 	initrd @INITRD@
 	append @APPEND_LIVE@ persistence
@@ -19,20 +19,19 @@ label live-@FLAVOUR@-persistence
 	ENDTEXT
 
 label live-@FLAVOUR@-install
-	menu label ^Install Amelia
+	menu label ^Install Amelia Linux
 	linux @LINUX@
 	initrd @INITRD@
 	append @APPEND_LIVE@ amelia.mode=install
 	TEXT HELP
-  Boot directly into the Amelia graphical system installer.
+  Boot directly into the Amelia Linux graphical system installer.
 	ENDTEXT
 
 label live-@FLAVOUR@-safe
-	menu label Amelia (^Safe Graphics)
+	menu label Amelia Linux (^Safe Graphics)
 	linux @LINUX@
 	initrd @INITRD@
 	append @APPEND_LIVE@ nomodeset vga=normal
 	TEXT HELP
   Compatible graphics mode (nomodeset) for display or GPU issues.
 	ENDTEXT
-

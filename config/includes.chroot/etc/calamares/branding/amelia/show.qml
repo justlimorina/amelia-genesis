@@ -33,7 +33,7 @@ Presentation {
             interactive: true
             currentIndex: 0
 
-            // Slide 1: Welcome to Amelia
+            // Slide 1: Welcome to Amelia Linux
             Item {
                 anchors.fill: parent
 
@@ -52,7 +52,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Chào mừng đến với Amelia"
+                        text: "Chào mừng đến với Amelia Linux"
                         font.pixelSize: 20
                         font.bold: true
                         color: "#6650a4"

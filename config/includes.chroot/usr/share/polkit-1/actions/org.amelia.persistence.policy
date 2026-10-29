@@ -3,13 +3,13 @@
  "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
 <policyconfig>
-  <vendor>Amelia</vendor>
+  <vendor>Amelia Linux</vendor>
   <vendor_url>https://github.com/justlimorina/amelia-genesis</vendor_url>
   <icon_name>amelia_logo</icon_name>
 
   <action id="org.amelia.persistence.init">
-    <description>Initialize USB Live Persistence for Amelia</description>
-    <description xml:lang="vi">Khởi tạo phân vùng lưu phiên USB cho Amelia</description>
+    <description>Initialize USB Live Persistence for Amelia Linux</description>
+    <description xml:lang="vi">Khởi tạo phân vùng lưu phiên USB cho Amelia Linux</description>
     <message>Authentication is required to configure persistence.conf on the USB persistence volume.</message>
     <message xml:lang="vi">Cần xác thực để ghi tệp cấu hình persistence.conf lên phân vùng lưu phiên USB.</message>
     <defaults>
@@ -20,4 +20,3 @@
     <annotate key="org.freedesktop.policykit.exec.path">/usr/libexec/amelia-init-persistence</annotate>
   </action>
 </policyconfig>
-

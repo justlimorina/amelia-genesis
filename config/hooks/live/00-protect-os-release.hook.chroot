@@ -39,7 +39,7 @@ divert_file "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-symbol
 # Ensure correct permissions
 chmod 644 /etc/os-release /usr/lib/os-release /etc/issue /etc/issue.net /usr/share/dbus-1/services/org.gnome.Settings.service 2>/dev/null || true
 
-# Ensure /etc/grub.d/10_linux uses exact "Amelia" name without appending GNU/Linux
-if [ -f /etc/grub.d/10_linux ] && ! grep -q 'Amelia|Ubuntu' /etc/grub.d/10_linux; then
-    sed -i 's/Ubuntu|\*GNU\/Linux)/Amelia|Ubuntu|*GNU\/Linux)/' /etc/grub.d/10_linux || true
+# Ensure /etc/grub.d/10_linux uses exact "Amelia Linux" name without appending GNU/Linux
+if [ -f /etc/grub.d/10_linux ] && ! grep -q 'Amelia\*|Ubuntu' /etc/grub.d/10_linux; then
+    sed -i 's/Ubuntu|\*GNU\/Linux)/Amelia*|Ubuntu|*GNU\/Linux)/' /etc/grub.d/10_linux || true
 fi
