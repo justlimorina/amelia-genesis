@@ -9,3 +9,4 @@ Type=oneshot
 Nice=19
 IOSchedulingClass=idle
 ExecStart=/usr/bin/nix-collect-garbage --delete-older-than 30d
+

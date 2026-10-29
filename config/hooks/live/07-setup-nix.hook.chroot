@@ -35,3 +35,4 @@ chmod 0755 /usr/lib/live/config/0035-amelia-nix
 
 # 4. Enable nix-daemon socket/service and weekly store GC timer
 systemctl enable nix-daemon.socket nix-daemon.service amelia-nix-gc.timer 2>/dev/null || true
+

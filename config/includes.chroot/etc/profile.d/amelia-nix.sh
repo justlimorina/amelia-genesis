@@ -10,3 +10,4 @@ if [ -d /nix ]; then
         *) export XDG_DATA_DIRS="$HOME/.nix-profile/share:/nix/var/nix/profiles/default/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}" ;;
     esac
 fi
+

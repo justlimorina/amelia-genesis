@@ -3,3 +3,4 @@ nix-bin
 nix-setup-systemd
 ca-certificates
 xz-utils
+
