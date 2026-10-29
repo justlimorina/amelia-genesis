@@ -1,0 +1,37 @@
+#!/bin/sh
+set -e
+
+echo "Configuring Nix multi-user daemon & Flakes for Amelia Linux: Nicole..."
+
+# 1. Divert /etc/nix/nix.conf so nix-setup-systemd upgrades never overwrite Flakes config
+if ! dpkg-divert --list "/etc/nix/nix.conf" 2>/dev/null | grep -q "/etc/nix/nix.conf"; then
+    if [ -f /etc/nix/nix.conf ]; then
+        cp -a /etc/nix/nix.conf /etc/nix/nix.conf.amelia_tmp
+    fi
+    dpkg-divert --local --rename --divert "/etc/nix/nix.conf.debian" --add "/etc/nix/nix.conf"
+    if [ -f /etc/nix/nix.conf.amelia_tmp ]; then
+        mv /etc/nix/nix.conf.amelia_tmp /etc/nix/nix.conf
+    fi
+fi
+
+# 2. Ensure groups and Nix store filesystem layout exist inside squashfs
+groupadd --force --system nix-users || true
+groupadd --force --system nixbld || true
+
+mkdir -p /nix/store /nix/var/nix/db /nix/var/nix/daemon-socket \
+         /nix/var/nix/gcroots/per-user /nix/var/nix/profiles/per-user \
+         /nix/var/nix/profiles/default
+
+chown root:nixbld /nix/store
+chmod 1775 /nix/store
+chown root:nix-users /nix/var/nix/daemon-socket
+chmod 0770 /nix/var/nix/daemon-socket
+chmod 1777 /nix/var/nix/gcroots/per-user /nix/var/nix/profiles/per-user
+
+# 3. Permissions for scripts & configs
+chmod 0644 /etc/nix/nix.conf /etc/profile.d/amelia-nix.sh \
+           /etc/environment.d/60-amelia-nix.conf /etc/tmpfiles.d/amelia-nix.conf
+chmod 0755 /usr/lib/live/config/0035-amelia-nix
+
+# 4. Enable nix-daemon socket/service and weekly store GC timer
+systemctl enable nix-daemon.socket nix-daemon.service amelia-nix-gc.timer 2>/dev/null || true

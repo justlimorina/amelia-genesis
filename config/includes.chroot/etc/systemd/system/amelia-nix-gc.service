@@ -1,0 +1,11 @@
+[Unit]
+Description=Amelia Linux Automatic Nix Store Garbage Collection
+Documentation=man:nix-collect-garbage(1)
+ConditionACPower=true
+After=nix-daemon.socket
+
+[Service]
+Type=oneshot
+Nice=19
+IOSchedulingClass=idle
+ExecStart=/usr/bin/nix-collect-garbage --delete-older-than 30d

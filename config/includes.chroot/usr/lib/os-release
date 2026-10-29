@@ -1,9 +1,11 @@
-PRETTY_NAME="Amelia Linux: Charlotte"
+PRETTY_NAME="Amelia Linux: Nicole"
 NAME="Amelia Linux"
-VERSION_ID="charlotte"
-VERSION="Charlotte"
-VERSION_CODENAME=charlotte
-DEBIAN_CODENAME=testing
+VERSION_ID="nicole"
+VERSION="Nicole"
+VERSION_CODENAME=nicole
+DEBIAN_CODENAME=stable
+VARIANT="with Nix"
+VARIANT_ID=nix
 ID=amelia
 ID_LIKE=debian
 HOME_URL="https://github.com/justlimorina/amelia-genesis"

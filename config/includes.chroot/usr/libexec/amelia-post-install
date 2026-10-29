@@ -10,6 +10,7 @@ rm -f /etc/sudoers.d/live-user
 rm -f /etc/gdm3/custom.conf
 rm -f /usr/libexec/amelia-init-persistence
 rm -f /usr/share/polkit-1/actions/org.amelia.persistence.policy
+rm -f /usr/lib/live/config/0035-amelia-nix
 
 # Clean up any leftover live 'user' home directory if Calamares created a different user
 if ! id user >/dev/null 2>&1 && [ -d /home/user ]; then
@@ -25,26 +26,34 @@ if [ -f "$SCHEMA_OVERRIDE" ]; then
     fi
 fi
 
-# 3. Write clean Debian testing APT sources (hardcoded to 'testing' per Amelia policy)
+# 3. Write clean Debian stable APT sources (hardcoded to 'stable' for Amelia Linux: Nicole)
 cat > /etc/apt/sources.list << 'EOF'
-deb http://deb.debian.org/debian/ testing main contrib non-free non-free-firmware
-deb-src http://deb.debian.org/debian/ testing main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian/ stable main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian/ stable main contrib non-free non-free-firmware
 
-deb http://security.debian.org/debian-security/ testing-security main contrib non-free non-free-firmware
-deb-src http://security.debian.org/debian-security/ testing-security main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security/ stable-security main contrib non-free non-free-firmware
+deb-src http://security.debian.org/debian-security/ stable-security main contrib non-free non-free-firmware
 
-deb http://deb.debian.org/debian/ testing-updates main contrib non-free non-free-firmware
-deb-src http://deb.debian.org/debian/ testing-updates main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian/ stable-updates main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian/ stable-updates main contrib non-free non-free-firmware
 EOF
 
-# 4. Ensure LUKS initramfs permissions remain strict if /etc/crypttab has entries
+# 4. Ensure /nix/store permissions remain valid (especially when /@nix is mounted on Btrfs)
+if getent group nixbld >/dev/null 2>&1; then
+    mkdir -p /nix/store /nix/var/nix/db /nix/var/nix/profiles/per-user /nix/var/nix/gcroots/per-user
+    chown root:nixbld /nix/store
+    chmod 1775 /nix/store
+    chmod 1777 /nix/var/nix/profiles/per-user /nix/var/nix/gcroots/per-user
+fi
+
+# 5. Ensure LUKS initramfs permissions remain strict if /etc/crypttab has entries
 if [ -f /etc/crypttab ] && grep -Eqv '^[[:space:]]*(#|$)' /etc/crypttab; then
     mkdir -p /etc/initramfs-tools/conf.d
     echo "UMASK=0077" > /etc/initramfs-tools/conf.d/initramfs-permissions
     chmod 0600 /crypto_keyfile.bin 2>/dev/null || true
 fi
 
-# 5. Re-verify GRUB menu uses exact "Amelia Linux" branding and OS prober is enabled
+# 6. Re-verify GRUB menu uses exact "Amelia Linux" branding and OS prober is enabled
 if [ -f /etc/grub.d/10_linux ] && ! grep -q 'Amelia\*|Ubuntu' /etc/grub.d/10_linux; then
     sed -i 's/Ubuntu|\*GNU\/Linux)/Amelia*|Ubuntu|*GNU\/Linux)/' /etc/grub.d/10_linux || true
 fi
@@ -55,4 +64,3 @@ fi
 # Self-delete post-install helper
 rm -f /usr/libexec/amelia-post-install
 exit 0
-

@@ -120,21 +120,39 @@ STRINGS = {
         "window_title": "Amelia Welcome",
         "lang_toggle": "Tiếng Việt",
         "lang_tooltip": "Switch language to Vietnamese",
-        "hero_subtitle_live": "Welcome to Amelia Linux: Charlotte. Explore in a clean live session, enable USB persistence, or install to your drive.",
-        "hero_subtitle_persist": "Welcome back to Amelia Linux: Charlotte. USB Live Persistence is active — your files and settings stay across reboots.",
-        "hero_subtitle_installed": "Welcome to your newly installed Amelia Linux: Charlotte system. Keep your system updated and install essential apps.",
-        "badge_live": "Live Session · Charlotte",
-        "badge_persist": "USB Persistence · Charlotte",
-        "badge_installed": "Installed System · Charlotte",
+        "hero_subtitle_live": "Welcome to Amelia Linux: Nicole. Rock-solid Debian Stable base powered by Nix Flakes and Flatpak.",
+        "hero_subtitle_persist": "Welcome back to Amelia Linux: Nicole. USB Live Persistence is active — your files and Nix/system settings stay across reboots.",
+        "hero_subtitle_installed": "Welcome to Amelia Linux: Nicole. Enjoy a rock-solid Debian Stable base with 120,000+ up-to-date packages via Nix Flakes.",
+        "badge_live": "Live Session · Nicole (Nix)",
+        "badge_persist": "USB Persistence · Nicole (Nix)",
+        "badge_installed": "Installed System · Nicole (Nix)",
         "persist_banner": "USB Persistence is active: files, Wi-Fi passwords, and settings remain stored on this USB drive across reboots.",
         "group_system": "System",
-        "install_title": "Install Amelia Linux",
-        "install_sub": "Launch graphical installer (Btrfs subvolumes, ext4, XFS, and optional LUKS encryption)",
+        "install_title": "Install Amelia Linux: Nicole",
+        "install_sub": "Launch graphical installer (Btrfs @nix subvolume, ext4, XFS, and optional LUKS encryption)",
         "install_btn": "Install",
         "update_title": "System & App Updates",
-        "update_sub": "Check for testing stream updates and Flatpak upgrades in Software",
+        "update_sub": "Check for Debian Stable security updates and Flatpak upgrades in Software",
         "update_btn": "Updates",
-        "group_apps": "Essential Applications",
+        "group_apps": "Package Managers & Essential Apps",
+        "nix_row_title": "Nix Package Manager & Flakes",
+        "nix_row_sub": "120,000+ packages via nixpkgs · Flakes enabled out of the box",
+        "nix_row_btn": "Nix Hub",
+        "nix_page_title": "Nix Package Manager (Nicole)",
+        "nix_status_group": "Daemon & Quick Maintenance",
+        "nix_daemon_title": "Nix Multi-User Daemon & Flakes",
+        "nix_daemon_active": "Active · nix-command & flakes enabled (/nix/store)",
+        "nix_daemon_ready": "Configured · Socket activates automatically on first nix command",
+        "nix_term_btn": "Open Terminal",
+        "nix_upgrade_title": "Upgrade User Nix Packages",
+        "nix_upgrade_sub": "Run 'nix profile upgrade --all' in terminal",
+        "nix_upgrade_btn": "Upgrade",
+        "nix_gc_title": "Clean Unused Nix Store Paths",
+        "nix_gc_sub": "Run 'nix-collect-garbage -d' (automatic 30-day cleanup also runs weekly)",
+        "nix_gc_btn": "Clean Store",
+        "nix_cmd_group": "Essential Nix Flakes Commands (Click to Copy)",
+        "nix_copy_btn": "Copy",
+        "toast_cmd_copied": "Copied command: {cmd}",
         "oo_title": "ONLYOFFICE Desktop Editors",
         "oo_sub": "Full .docx, .xlsx, .pptx suite · Works offline after install (~587 MiB via Flathub)",
         "oo_sub_installed": "Installed and set as default handler for .docx, .xlsx, and .pptx documents",
@@ -145,7 +163,7 @@ STRINGS = {
         "apps_catalog_sub": "Quickly install Google Chrome, Steam, VS Code, Discord, Spotify and more",
         "apps_catalog_btn": "Browse Apps",
         "store_title": "Browse Software Center",
-        "store_sub": "Discover applications from Amelia Linux testing repositories and Flathub",
+        "store_sub": "Discover GUI applications from Flathub and Debian Stable repositories",
         "store_btn": "Open",
         "group_guides": "Setup, Hardware & Desktop Tools",
         "customize_row_title": "Desktop & Appearance",
@@ -224,21 +242,39 @@ STRINGS = {
         "window_title": "Chào mừng đến với Amelia Linux",
         "lang_toggle": "English",
         "lang_tooltip": "Chuyển ngôn ngữ sang Tiếng Anh",
-        "hero_subtitle_live": "Chào mừng bạn đến với Amelia Linux: Charlotte. Trải nghiệm phiên Live sạch, bật lưu phiên USB hoặc cài đặt lên ổ cứng.",
-        "hero_subtitle_persist": "Chào mừng trở lại Amelia Linux: Charlotte. Lưu phiên USB (Persistence) đang bật — tệp và thiết lập được giữ lại sau khi khởi động lại.",
-        "hero_subtitle_installed": "Chào mừng bạn đến với hệ thống Amelia Linux: Charlotte đã cài đặt. Hãy kiểm tra cập nhật và cài các ứng dụng thiết yếu.",
-        "badge_live": "Phiên Live · Charlotte",
-        "badge_persist": "Lưu phiên USB · Charlotte",
-        "badge_installed": "Đã cài đặt · Charlotte",
+        "hero_subtitle_live": "Chào mừng đến với Amelia Linux: Nicole. Nền tảng Debian Stable vững chắc kết hợp Nix Flakes và Flatpak.",
+        "hero_subtitle_persist": "Chào mừng trở lại Amelia Linux: Nicole. Lưu phiên USB đang bật — tệp và cấu hình được giữ lại qua các lần khởi động.",
+        "hero_subtitle_installed": "Chào mừng đến với Amelia Linux: Nicole. Nền Debian Stable ổn định cùng hơn 120.000 gói mới nhất từ Nix Flakes.",
+        "badge_live": "Phiên Live · Nicole (Nix)",
+        "badge_persist": "Lưu phiên USB · Nicole (Nix)",
+        "badge_installed": "Đã cài đặt · Nicole (Nix)",
         "persist_banner": "Lưu phiên USB đang hoạt động: tài liệu, mật khẩu Wi-Fi và cài đặt sẽ được lưu lại trên USB này qua các lần khởi động.",
         "group_system": "Hệ thống",
-        "install_title": "Cài đặt Amelia Linux lên máy",
-        "install_sub": "Mở trình cài đặt Calamares (hỗ trợ Btrfs subvolumes, ext4, XFS và mã hóa ổ đĩa LUKS)",
+        "install_title": "Cài đặt Amelia Linux: Nicole",
+        "install_sub": "Mở trình cài đặt Calamares (tự tách subvolume Btrfs @nix, ext4, XFS và mã hóa LUKS)",
         "install_btn": "Cài đặt",
         "update_title": "Cập nhật hệ thống & ứng dụng",
-        "update_sub": "Kiểm tra bản cập nhật nhánh testing và ứng dụng Flatpak trong Kho ứng dụng",
+        "update_sub": "Kiểm tra bản vá bảo mật Debian Stable và cập nhật ứng dụng Flatpak",
         "update_btn": "Cập nhật",
-        "group_apps": "Ứng dụng thiết yếu",
+        "group_apps": "Trình quản lý gói & Ứng dụng thiết yếu",
+        "nix_row_title": "Trình quản lý gói Nix & Flakes",
+        "nix_row_sub": "Hơn 120.000 gói từ nixpkgs · Đã bật sẵn Flakes và tự hiện icon lên menu",
+        "nix_row_btn": "Mở Nix Hub",
+        "nix_page_title": "Quản lý gói Nix (Nicole)",
+        "nix_status_group": "Trạng thái Daemon & Bảo trì nhanh",
+        "nix_daemon_title": "Nix Multi-User Daemon & Flakes",
+        "nix_daemon_active": "Đang chạy · Đã bật nix-command & flakes (/nix/store)",
+        "nix_daemon_ready": "Đã cấu hình · Tự kích hoạt qua socket ngay khi gõ lệnh nix",
+        "nix_term_btn": "Mở Terminal",
+        "nix_upgrade_title": "Nâng cấp các gói Nix đã cài",
+        "nix_upgrade_sub": "Chạy lệnh 'nix profile upgrade --all' trong cửa sổ dòng lệnh",
+        "nix_upgrade_btn": "Nâng cấp",
+        "nix_gc_title": "Dọn rác Nix Store (Garbage Collect)",
+        "nix_gc_sub": "Chạy 'nix-collect-garbage -d' (hệ thống cũng tự dọn gói cũ >30 ngày hàng tuần)",
+        "nix_gc_btn": "Dọn ngay",
+        "nix_cmd_group": "Lệnh Nix Flakes thường dùng (Bấm để chép)",
+        "nix_copy_btn": "Chép",
+        "toast_cmd_copied": "Đã chép lệnh: {cmd}",
         "oo_title": "ONLYOFFICE Desktop Editors",
         "oo_sub": "Bộ văn phòng tương thích .docx, .xlsx, .pptx · Chạy offline sau khi cài (~587 MiB từ Flathub)",
         "oo_sub_installed": "Đã cài đặt và đặt làm ứng dụng mặc định cho .docx, .xlsx, .pptx",
@@ -249,7 +285,7 @@ STRINGS = {
         "apps_catalog_sub": "Cài nhanh Google Chrome, Steam, VS Code, Discord, Spotify và nhiều hơn nữa",
         "apps_catalog_btn": "Xem ứng dụng",
         "store_title": "Khám phá Kho ứng dụng",
-        "store_sub": "Tìm và cài đặt phần mềm từ kho Amelia Linux testing và Flathub",
+        "store_sub": "Tìm và cài đặt phần mềm đồ họa từ Flathub và kho Debian Stable",
         "store_btn": "Mở",
         "group_guides": "Thiết lập, Phần cứng & Công cụ",
         "customize_row_title": "Giao diện & Tùy biến Desktop",
@@ -570,6 +606,21 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
 
         # 2. Essential Apps Group
         apps_group = Adw.PreferencesGroup(title=self.t("group_apps"))
+
+        # Nix Package Manager & Flakes Hub
+        nix_row = Adw.ActionRow(
+            title=self.t("nix_row_title"),
+            subtitle=self.t("nix_row_sub"),
+            activatable=True,
+        )
+        nix_row.add_prefix(Gtk.Image.new_from_icon_name("utilities-terminal-symbolic"))
+        nix_btn = Gtk.Button(label=self.t("nix_row_btn"))
+        nix_btn.set_valign(Gtk.Align.CENTER)
+        nix_btn.add_css_class("suggested-action")
+        nix_btn.connect("clicked", lambda *_: self.nav_view.push(self._create_nix_page()))
+        nix_row.add_suffix(nix_btn)
+        nix_row.set_activatable_widget(nix_btn)
+        apps_group.add(nix_row)
 
         # ONLYOFFICE Quick Action
         self.oo_row = Adw.ActionRow(
@@ -1108,6 +1159,93 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
         self._show_toast(self.t("toast_persist_ok") if ok else self.t("toast_persist_fail"))
         return GLib.SOURCE_REMOVE
 
+    def _create_nix_page(self) -> Adw.NavigationPage:
+        toolbar_view = Adw.ToolbarView()
+        toolbar_view.add_top_bar(Adw.HeaderBar())
+
+        page = Adw.PreferencesPage()
+
+        status_group = Adw.PreferencesGroup(title=self.t("nix_status_group"))
+        sock_ready = Path("/nix/var/nix/daemon-socket/socket").exists()
+        daemon_row = Adw.ActionRow(
+            title=self.t("nix_daemon_title"),
+            subtitle=self.t("nix_daemon_active") if sock_ready else self.t("nix_daemon_ready"),
+        )
+        daemon_row.add_prefix(Gtk.Image.new_from_icon_name("emblem-system-symbolic"))
+        term_btn = Gtk.Button(label=self.t("nix_term_btn"))
+        term_btn.set_valign(Gtk.Align.CENTER)
+        term_btn.connect("clicked", lambda *_: self._spawn(["ptyxis"]))
+        daemon_row.add_suffix(term_btn)
+        daemon_row.set_activatable_widget(term_btn)
+        status_group.add(daemon_row)
+
+        upg_row = Adw.ActionRow(
+            title=self.t("nix_upgrade_title"),
+            subtitle=self.t("nix_upgrade_sub"),
+        )
+        upg_row.add_prefix(Gtk.Image.new_from_icon_name("software-update-available-symbolic"))
+        upg_btn = Gtk.Button(label=self.t("nix_upgrade_btn"))
+        upg_btn.set_valign(Gtk.Align.CENTER)
+        upg_cmd = (
+            "ptyxis -- bash -lc '"
+            "echo \"=== Upgrading Nix User Profile Packages ===\"; "
+            "nix profile upgrade --all; "
+            "echo \"\"; read -p \"Press Enter to close...\"'"
+        )
+        upg_btn.connect("clicked", lambda *_: self._spawn(["sh", "-c", upg_cmd]))
+        upg_row.add_suffix(upg_btn)
+        upg_row.set_activatable_widget(upg_btn)
+        status_group.add(upg_row)
+
+        gc_row = Adw.ActionRow(
+            title=self.t("nix_gc_title"),
+            subtitle=self.t("nix_gc_sub"),
+        )
+        gc_row.add_prefix(Gtk.Image.new_from_icon_name("user-trash-symbolic"))
+        gc_btn = Gtk.Button(label=self.t("nix_gc_btn"))
+        gc_btn.set_valign(Gtk.Align.CENTER)
+        gc_cmd = (
+            "ptyxis -- bash -lc '"
+            "echo \"=== Cleaning Unused Nix Store Generations ===\"; "
+            "nix-collect-garbage -d; "
+            "echo \"\"; read -p \"Press Enter to close...\"'"
+        )
+        gc_btn.connect("clicked", lambda *_: self._spawn(["sh", "-c", gc_cmd]))
+        gc_row.add_suffix(gc_btn)
+        gc_row.set_activatable_widget(gc_btn)
+        status_group.add(gc_row)
+        page.add(status_group)
+
+        cmd_group = Adw.PreferencesGroup(title=self.t("nix_cmd_group"))
+        nix_examples = [
+            ("Search Nixpkgs", "Tìm kiếm gói trên Nixpkgs", "nix search nixpkgs fastfetch"),
+            ("Install Package to Profile", "Cài gói vào môi trường cá nhân", "nix profile install nixpkgs#neovim"),
+            ("Run Ephemeral App Without Installing", "Chạy thử gói ngay không cần cài đặt", "nix run nixpkgs#btop"),
+            ("List Installed Nix Packages", "Xem danh sách gói Nix đã cài", "nix profile list"),
+        ]
+        for en_title, vi_title, cmd_str in nix_examples:
+            row = Adw.ActionRow(
+                title=vi_title if self.lang == "vi" else en_title,
+                subtitle=cmd_str,
+            )
+            row.add_prefix(Gtk.Image.new_from_icon_name("utilities-terminal-symbolic"))
+            c_btn = Gtk.Button(label=self.t("nix_copy_btn"))
+            c_btn.set_valign(Gtk.Align.CENTER)
+            c_btn.connect("clicked", lambda _b, c=cmd_str: self._copy_text(c))
+            row.add_suffix(c_btn)
+            row.set_activatable_widget(c_btn)
+            cmd_group.add(row)
+        page.add(cmd_group)
+
+        toolbar_view.set_content(page)
+        return Adw.NavigationPage.new(toolbar_view, self.t("nix_page_title"))
+
+    def _copy_text(self, text: str) -> None:
+        display = Gdk.Display.get_default()
+        if display is not None:
+            display.get_clipboard().set(text)
+            self._show_toast(self.t("toast_cmd_copied").format(cmd=text))
+
     def _on_copy_sysinfo(self, *_args: object) -> None:
         os_rel: dict[str, str] = {}
         try:
@@ -1117,12 +1255,18 @@ class AmeliaWelcomeWindow(Adw.ApplicationWindow):
                     os_rel[k.strip()] = v.strip().strip('"')
         except OSError:
             pass
-        pretty = os_rel.get("PRETTY_NAME", "Amelia Linux: Charlotte")
-        codename = os_rel.get("VERSION_CODENAME", "charlotte")
-        deb_codename = os_rel.get("DEBIAN_CODENAME", "testing")
+        pretty = os_rel.get("PRETTY_NAME", "Amelia Linux: Nicole")
+        codename = os_rel.get("VERSION_CODENAME", "nicole")
+        deb_codename = os_rel.get("DEBIAN_CODENAME", "stable")
+        nix_ver = "not installed"
+        if shutil.which("nix"):
+            proc = subprocess.run(["nix", "--version"], stdout=subprocess.PIPE, text=True, check=False)
+            if proc.returncode == 0 and proc.stdout.strip():
+                nix_ver = proc.stdout.strip()
         info_lines = [
             f"System: {pretty} (codename={codename}, debian_codename={deb_codename})",
             f"Mode: {self.boot_mode}",
+            f"Nix: {nix_ver}",
             f"Kernel: {platform.release()}",
             f"Arch: {platform.machine()}",
             f"Session: {os.environ.get('XDG_SESSION_TYPE', 'wayland')}",

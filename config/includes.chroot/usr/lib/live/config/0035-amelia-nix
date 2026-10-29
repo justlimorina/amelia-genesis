@@ -1,0 +1,41 @@
+#!/bin/sh
+
+. /usr/lib/live/config.sh
+
+## Grant Live user access to nix-daemon socket (group: nix-users) before GDM3 login
+
+Cmdline ()
+{
+    for _PARAMETER in ${LIVE_CONFIG_CMDLINE}
+    do
+        case "${_PARAMETER}" in
+            live-config.username=*|username=*)
+                LIVE_USERNAME="${_PARAMETER#*username=}"
+                ;;
+        esac
+    done
+}
+
+Init ()
+{
+    if component_was_executed "amelia-nix"
+    then
+        exit 0
+    fi
+    echo -n " amelia-nix"
+}
+
+Config ()
+{
+    _USER="${LIVE_USERNAME:-user}"
+    if getent group nix-users >/dev/null 2>&1 && id "${_USER}" >/dev/null 2>&1
+    then
+        usermod -aG nix-users "${_USER}" || true
+    fi
+    mkdir -p /var/lib/live/config
+    touch /var/lib/live/config/amelia-nix
+}
+
+Cmdline
+Init
+Config

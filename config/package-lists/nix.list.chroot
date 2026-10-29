@@ -1,0 +1,5 @@
+# Nix Package Manager & Multi-user Systemd Daemon
+nix-bin
+nix-setup-systemd
+ca-certificates
+xz-utils

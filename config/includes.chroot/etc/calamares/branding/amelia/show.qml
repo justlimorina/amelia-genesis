@@ -52,7 +52,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Chào mừng đến với Amelia Linux: Charlotte"
+                        text: "Chào mừng đến với Amelia Linux: Nicole"
                         font.pixelSize: 20
                         font.bold: true
                         color: "#6650a4"
@@ -60,7 +60,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Môi trường làm việc hiện đại, tối giản và mượt mà trên nền tảng Debian Testing."
+                        text: "Nền tảng Debian Stable vững chắc kết hợp trình quản lý gói Nix hiện đại."
                         font.pixelSize: 13
                         color: "#49454e"
                         Layout.alignment: Qt.AlignHCenter
@@ -87,7 +87,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Môi trường GNOME tối giản & Flatpak"
+                        text: "Sức mạnh kép từ Nix Flakes & Flatpak"
                         font.pixelSize: 20
                         font.bold: true
                         color: "#6650a4"
@@ -95,7 +95,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Hệ thống tinh gọn, không bloatware, sẵn sàng cài đặt ứng dụng phong phú qua Flatpak."
+                        text: "Hơn 120.000 gói phần mềm mới nhất từ Nixpkgs cùng kho ứng dụng đồ họa Flathub."
                         font.pixelSize: 13
                         color: "#49454e"
                         Layout.alignment: Qt.AlignHCenter
