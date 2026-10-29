@@ -1,0 +1,11 @@
+PRETTY_NAME="Amelia"
+NAME="Amelia"
+VERSION_ID="testing"
+VERSION="testing"
+VERSION_CODENAME=testing
+ID=amelia
+ID_LIKE=debian
+HOME_URL="https://github.com/justlimorina/amelia-genesis"
+SUPPORT_URL="https://github.com/justlimorina/amelia-genesis"
+BUG_REPORT_URL="https://github.com/justlimorina/amelia-genesis"
+LOGO=amelia-wordmark

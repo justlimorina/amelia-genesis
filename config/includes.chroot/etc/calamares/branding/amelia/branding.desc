@@ -1,7 +1,7 @@
 ---
 componentName: amelia
-welcomeStyleCalamares: true
-welcomeExpandingLogo: true
+welcomeStyleCalamares: false
+welcomeExpandingLogo: false
 windowExpanding: normal
 windowSize: 960px,620px
 placement: center
@@ -24,12 +24,11 @@ images:
     productLogo: "amelia_logo.svg"
     productIcon: "amelia_logo.svg"
     productWelcome: "amelia-wordmark.svg"
-    productWallpaper: "slide.png"
 
 slideshow: "show.qml"
 
 style:
-    sidebarBackground: "#fffbff"
-    sidebarText: "#1c1b1e"
-    sidebarTextSelect: "#6650a4"
-    sidebarTextHighlight: "#e8ddff"
+    sidebarBackground: "#f3edf7"
+    sidebarText: "#1d1b20"
+    sidebarTextSelect: "#6750a4"
+    sidebarTextHighlight: "#e8def8"

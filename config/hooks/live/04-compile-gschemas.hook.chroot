@@ -6,6 +6,16 @@ if command -v fc-cache >/dev/null 2>&1; then
     fc-cache -f /usr/share/fonts/truetype/adwaita || true
 fi
 
+echo "Ensuring desktop-base does not override Amelia wallpaper..."
+if [ -f /usr/share/glib-2.0/schemas/10_desktop-base.gschema.override ]; then
+    sed -i '/picture-uri/d' /usr/share/glib-2.0/schemas/10_desktop-base.gschema.override || true
+fi
+
+if [ -d /usr/share/images/desktop-base ]; then
+    ln -sf /usr/share/backgrounds/amelia/amelia_wallpaper.jpeg /usr/share/images/desktop-base/desktop-background || true
+    ln -sf /usr/share/backgrounds/amelia/amelia_wallpaper.jpeg /usr/share/images/desktop-base/default || true
+fi
+
 echo "Compiling Dconf GLib Schemas for Amelia GNOME settings..."
 if command -v glib-compile-schemas >/dev/null 2>&1; then
     glib-compile-schemas /usr/share/glib-2.0/schemas || true

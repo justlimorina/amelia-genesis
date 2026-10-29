@@ -7,6 +7,8 @@ echo "Configuring Amelia Branding for Plymouth & GNOME Settings..."
 mkdir -p /usr/share/plymouth/themes/spinner
 mkdir -p /usr/share/pixmaps
 mkdir -p /usr/share/icons/hicolor/scalable/apps
+mkdir -p /usr/share/icons/vendor/scalable/emblems
+mkdir -p /usr/share/icons/desktop-base/scalable/emblems
 
 # Ensure SVG logo files are present in system locations
 if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-white.svg" ]; then
@@ -32,6 +34,19 @@ if [ -f "/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg" 
     cp /usr/share/pixmaps/amelia-wordmark-full-white.svg /usr/share/pixmaps/amelia-wordmark-dark.svg
 fi
 
+# 1. FIX GNOME SETTINGS ABOUT LOGO (Hardcoded in Debian gnome-control-center: /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg)
+if [ -f "/usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg" ]; then
+    # Overwrite Debian desktop-base emblems directly so all alternatives resolve to Amelia
+    cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian.svg 2>/dev/null || true
+    cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor-white.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian-white.svg 2>/dev/null || true
+    cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor-symbolic.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian-symbolic.svg 2>/dev/null || true
+fi
+
+# Replace distributor-logo-debian across Papirus icon theme so no Debian swirls remain
+find /usr/share/icons/Papirus -name "distributor-logo-debian.svg" -exec cp -f /usr/share/icons/hicolor/scalable/apps/amelia_logo.svg {} \; 2>/dev/null || true
+find /usr/share/icons/Papirus -name "debian-logo.svg" -exec cp -f /usr/share/icons/hicolor/scalable/apps/amelia_logo.svg {} \; 2>/dev/null || true
+find /usr/share/icons/Papirus -name "debian-swirl.svg" -exec cp -f /usr/share/icons/hicolor/scalable/apps/amelia_logo.svg {} \; 2>/dev/null || true
+
 # Render PNG assets using rsvg-convert if available
 if command -v rsvg-convert >/dev/null 2>&1; then
     # Plymouth Spinner Watermark (Width 150px)
@@ -40,7 +55,6 @@ if command -v rsvg-convert >/dev/null 2>&1; then
     rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/pixmaps/debian-logo.png
 
     # GNOME Settings About Logo (Width 200px)
-    # Light mode uses amelia-wordmark-full-black, Dark mode uses amelia-wordmark-full-white (amelia-wordmark-dark)
     if [ -f "/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg" ]; then
         rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg -o /usr/share/pixmaps/amelia-wordmark.png
         rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg -o /usr/share/pixmaps/amelia-wordmark-full-black.png
@@ -59,4 +73,5 @@ fi
 # Update icon cache
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
     gtk-update-icon-cache -f /usr/share/icons/hicolor || true
+    gtk-update-icon-cache -f /usr/share/icons/vendor || true
 fi

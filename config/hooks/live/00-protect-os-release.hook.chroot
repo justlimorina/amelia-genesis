@@ -1,0 +1,33 @@
+#!/bin/sh
+set -e
+
+echo "Applying dpkg-divert to protect Amelia branding & identity files..."
+
+divert_file() {
+    file_path="$1"
+    divert_path="$2"
+
+    if ! dpkg-divert --list "$file_path" 2>/dev/null | grep -q "$file_path"; then
+        if [ -f "$file_path" ] || [ -L "$file_path" ]; then
+            cp -a "$file_path" "${file_path}.amelia_tmp"
+        fi
+
+        dpkg-divert --local --rename --divert "$divert_path" --add "$file_path"
+
+        if [ -f "${file_path}.amelia_tmp" ]; then
+            mv "${file_path}.amelia_tmp" "$file_path"
+        fi
+    fi
+}
+
+# 1. Protect /etc/os-release and /usr/lib/os-release
+divert_file "/etc/os-release" "/etc/os-release.debian"
+divert_file "/usr/lib/os-release" "/usr/lib/os-release.debian"
+
+# 2. Protect /etc/issue and /etc/issue.net
+divert_file "/etc/issue" "/etc/issue.debian"
+divert_file "/etc/issue.net" "/etc/issue.net.debian"
+
+# Ensure correct permissions
+chmod 644 /etc/os-release /usr/lib/os-release /etc/issue /etc/issue.net 2>/dev/null || true
+
