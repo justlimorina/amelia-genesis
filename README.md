@@ -32,6 +32,9 @@
     <a href="https://calamares.io/">
       <img src="https://img.shields.io/badge/Installer-Calamares-5c3b88?style=flat" alt="Calamares">
     </a>
+    <a href="LICENSE">
+      <img src="https://img.shields.io/badge/License-GPL--3.0-blue.svg?style=flat" alt="GPL-3.0 License">
+    </a>
     <a href="https://github.com/justlimorina/amelia-genesis/stargazers">
       <img src="https://img.shields.io/github/stars/justlimorina/amelia-genesis?style=flat&color=yellow" alt="Stars">
     </a>
@@ -163,6 +166,7 @@ Contributions are warmly welcomed! Feel free to report bugs, suggest features, o
 
 ## 📄 License
 
-Amelia Linux scripts and configurations are released under the MIT License. Upstream packages, wallpapers, and components remain under their respective licenses.
+Amelia Linux scripts, configuration files, and tools (including Amelia Welcome) are released under the [GNU General Public License v3.0 (GPL-3.0)](LICENSE). Upstream Debian packages, third-party artwork, and desktop components remain under their respective licenses.
 
 <p align="right">(<a href="#readme-top">back to top ↑</a>)</p>
+
