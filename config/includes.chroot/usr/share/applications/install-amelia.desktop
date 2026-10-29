@@ -1,8 +1,10 @@
 [Desktop Entry]
 Type=Application
 Name=Install Amelia
-Comment=Install Amelia to your hard drive
-Exec=sudo -E calamares
+Name[vi]=Cài đặt Amelia
+Comment=Install Amelia to your drive
+Comment[vi]=Cài đặt Amelia lên ổ cứng của bạn
+Exec=/usr/local/bin/install-amelia
 Icon=amelia_logo
 Terminal=false
 Categories=System;

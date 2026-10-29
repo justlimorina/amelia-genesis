@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Amelia Session Welcome
+Exec=/usr/local/bin/amelia-session-init
+Icon=amelia_logo
+Terminal=false
+NoDisplay=true
+X-GNOME-Autostart-enabled=true
+

@@ -39,6 +39,11 @@ flatpak
 papirus-icon-theme
 gnome-software-plugin-flatpak
 fastfetch
+python3-gi
+gir1.2-gtk-4.0
+gir1.2-adw-1
+xdg-utils
+x11-xserver-utils
 
 # Boot, Partition & Installer
 plymouth
@@ -49,7 +54,11 @@ librsvg2-bin
 squashfs-tools
 dosfstools
 btrfs-progs
+xfsprogs
 ntfs-3g
+cryptsetup
+cryptsetup-initramfs
+keyutils
 os-prober
 efibootmgr
 grub-efi-amd64-bin

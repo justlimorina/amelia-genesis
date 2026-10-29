@@ -1,0 +1,6 @@
+#!/bin/sh
+if [ -r /usr/lib/amelia/libamelia-about-logo.so ] && [ -z "${LD_PRELOAD:-}" ]; then
+    export LD_PRELOAD="/usr/lib/amelia/libamelia-about-logo.so"
+fi
+exec /usr/bin/gnome-control-center "$@"
+

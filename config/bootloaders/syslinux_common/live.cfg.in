@@ -1,0 +1,38 @@
+label live-@FLAVOUR@
+	menu label ^Try Amelia (Live Session)
+	menu default
+	linux @LINUX@
+	initrd @INITRD@
+	append @APPEND_LIVE@
+	TEXT HELP
+  Clean live session. Changes are discarded when you reboot.
+	ENDTEXT
+
+label live-@FLAVOUR@-persistence
+	menu label Amelia Live with ^Persistence
+	linux @LINUX@
+	initrd @INITRD@
+	append @APPEND_LIVE@ persistence
+	TEXT HELP
+  Saves files and settings to a partition labeled 'persistence'.
+  Note: USB drive will retain your data across reboots.
+	ENDTEXT
+
+label live-@FLAVOUR@-install
+	menu label ^Install Amelia
+	linux @LINUX@
+	initrd @INITRD@
+	append @APPEND_LIVE@ amelia.mode=install
+	TEXT HELP
+  Boot directly into the Amelia graphical system installer.
+	ENDTEXT
+
+label live-@FLAVOUR@-safe
+	menu label Amelia (^Safe Graphics)
+	linux @LINUX@
+	initrd @INITRD@
+	append @APPEND_LIVE@ nomodeset vga=normal
+	TEXT HELP
+  Compatible graphics mode (nomodeset) for display or GPU issues.
+	ENDTEXT
+

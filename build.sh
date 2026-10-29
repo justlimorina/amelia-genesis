@@ -1,6 +1,14 @@
 #!/bin/bash
 set -euo pipefail
 
+# Compile GNOME Settings About dark/light logo shim on host if gcc is available
+if command -v gcc >/dev/null 2>&1 && [ -f config/includes.chroot/usr/src/amelia/libamelia-about-logo.c ]; then
+    mkdir -p config/includes.chroot/usr/lib/amelia
+    gcc -shared -fPIC -O2 -Wall -Wextra \
+        config/includes.chroot/usr/src/amelia/libamelia-about-logo.c \
+        -o config/includes.chroot/usr/lib/amelia/libamelia-about-logo.so -ldl
+fi
+
 sudo lb clean
 
 sudo lb config \

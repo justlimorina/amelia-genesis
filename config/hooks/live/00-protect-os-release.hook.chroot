@@ -28,6 +28,18 @@ divert_file "/usr/lib/os-release" "/usr/lib/os-release.debian"
 divert_file "/etc/issue" "/etc/issue.debian"
 divert_file "/etc/issue.net" "/etc/issue.net.debian"
 
-# Ensure correct permissions
-chmod 644 /etc/os-release /usr/lib/os-release /etc/issue /etc/issue.net 2>/dev/null || true
+# 3. Protect GNOME Settings D-Bus service so Dark/Light About logo shim persists across upgrades
+divert_file "/usr/share/dbus-1/services/org.gnome.Settings.service" "/usr/share/dbus-1/services/org.gnome.Settings.service.debian"
 
+# 4. Protect vendor/desktop-base emblem so desktop-base upgrades never restore Debian swirl
+divert_file "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian.svg" "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian.svg.debian"
+divert_file "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-white.svg" "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-white.svg.debian"
+divert_file "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-symbolic.svg" "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-symbolic.svg.debian"
+
+# Ensure correct permissions
+chmod 644 /etc/os-release /usr/lib/os-release /etc/issue /etc/issue.net /usr/share/dbus-1/services/org.gnome.Settings.service 2>/dev/null || true
+
+# Ensure /etc/grub.d/10_linux uses exact "Amelia" name without appending GNU/Linux
+if [ -f /etc/grub.d/10_linux ] && ! grep -q 'Amelia|Ubuntu' /etc/grub.d/10_linux; then
+    sed -i 's/Ubuntu|\*GNU\/Linux)/Amelia|Ubuntu|*GNU\/Linux)/' /etc/grub.d/10_linux || true
+fi

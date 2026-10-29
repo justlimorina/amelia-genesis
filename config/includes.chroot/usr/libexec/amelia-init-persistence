@@ -1,0 +1,45 @@
+#!/bin/sh
+set -eu
+
+DEV="$(blkid -L persistence 2>/dev/null || true)"
+if [ -z "$DEV" ] || [ ! -b "$DEV" ]; then
+    echo "No partition with label 'persistence' was found." >&2
+    exit 2
+fi
+
+FSTYPE="$(blkid -s TYPE -o value "$DEV" 2>/dev/null || true)"
+case "$FSTYPE" in
+    ext2|ext3|ext4|btrfs|xfs)
+        ;;
+    *)
+        echo "Partition $DEV uses '$FSTYPE'. Format it as ext4, btrfs, or xfs with label 'persistence'." >&2
+        exit 3
+        ;;
+esac
+
+EXISTING_MNT="$(findmnt -rn -S "$DEV" -o TARGET 2>/dev/null | head -n 1 || true)"
+if [ -n "$EXISTING_MNT" ]; then
+    printf '/ union\n' > "${EXISTING_MNT}/persistence.conf"
+    chmod 0644 "${EXISTING_MNT}/persistence.conf"
+    sync
+    echo "Configured ${EXISTING_MNT}/persistence.conf on $DEV ($FSTYPE)."
+    exit 0
+fi
+
+TMP_MNT="$(mktemp -d /run/amelia-persist.XXXXXX)"
+cleanup() {
+    umount "$TMP_MNT" 2>/dev/null || true
+    rmdir "$TMP_MNT" 2>/dev/null || true
+}
+trap cleanup EXIT INT TERM
+
+mount "$DEV" "$TMP_MNT"
+printf '/ union\n' > "${TMP_MNT}/persistence.conf"
+chmod 0644 "${TMP_MNT}/persistence.conf"
+sync
+umount "$TMP_MNT"
+rmdir "$TMP_MNT"
+trap - EXIT INT TERM
+
+echo "Configured persistence.conf on $DEV ($FSTYPE)."
+

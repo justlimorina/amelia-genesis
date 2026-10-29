@@ -1,0 +1,4 @@
+DPkg::Post-Invoke {
+    "if [ -f /etc/grub.d/10_linux ] && ! grep -q 'Amelia|Ubuntu' /etc/grub.d/10_linux; then sed -i 's/Ubuntu|\*GNU\/Linux)/Amelia|Ubuntu|*GNU\/Linux)/' /etc/grub.d/10_linux || true; fi";
+};
+

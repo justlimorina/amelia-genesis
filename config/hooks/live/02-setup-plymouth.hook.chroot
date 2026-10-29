@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "Configuring Amelia Branding for Plymouth & GNOME Settings..."
+echo "Configuring Amelia Branding for Plymouth, GDM & GNOME Settings..."
 
 # Create necessary icon & theme directories
 mkdir -p /usr/share/plymouth/themes/spinner
@@ -9,6 +9,7 @@ mkdir -p /usr/share/pixmaps
 mkdir -p /usr/share/icons/hicolor/scalable/apps
 mkdir -p /usr/share/icons/vendor/scalable/emblems
 mkdir -p /usr/share/icons/desktop-base/scalable/emblems
+mkdir -p /usr/share/images/vendor-logos
 
 # Ensure SVG logo files are present in system locations
 if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-white.svg" ]; then
@@ -28,15 +29,8 @@ if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-black.svg" ]; then
     cp /etc/calamares/branding/amelia/amelia-wordmark-full-black.svg /usr/share/pixmaps/
 fi
 
-# Ensure dark mode logo is present if pre-copied in chroot
-if [ -f "/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg" ] && [ ! -f "/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg" ]; then
-    cp /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg
-    cp /usr/share/pixmaps/amelia-wordmark-full-white.svg /usr/share/pixmaps/amelia-wordmark-dark.svg
-fi
-
-# 1. FIX GNOME SETTINGS ABOUT LOGO (Hardcoded in Debian gnome-control-center: /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg)
+# Overwrite Debian desktop-base emblems so all alternatives resolve to 200px Amelia wordmark
 if [ -f "/usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg" ]; then
-    # Overwrite Debian desktop-base emblems directly so all alternatives resolve to Amelia
     cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian.svg 2>/dev/null || true
     cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor-white.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian-white.svg 2>/dev/null || true
     cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor-symbolic.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian-symbolic.svg 2>/dev/null || true
@@ -47,22 +41,36 @@ find /usr/share/icons/Papirus -name "distributor-logo-debian.svg" -exec cp -f /u
 find /usr/share/icons/Papirus -name "debian-logo.svg" -exec cp -f /usr/share/icons/hicolor/scalable/apps/amelia_logo.svg {} \; 2>/dev/null || true
 find /usr/share/icons/Papirus -name "debian-swirl.svg" -exec cp -f /usr/share/icons/hicolor/scalable/apps/amelia_logo.svg {} \; 2>/dev/null || true
 
-# Render PNG assets using rsvg-convert if available
+# Render PNG assets using rsvg-convert (150px for Plymouth & GDM, 200px for Settings)
 if command -v rsvg-convert >/dev/null 2>&1; then
-    # Plymouth Spinner Watermark (Width 150px)
-    rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/plymouth/themes/spinner/watermark.png
-    rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/plymouth/debian-logo.png
-    rsvg-convert -w 150 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/pixmaps/debian-logo.png
-
-    # GNOME Settings About Logo (Width 200px)
-    if [ -f "/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg" ]; then
-        rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg -o /usr/share/pixmaps/amelia-wordmark.png
-        rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-black.svg -o /usr/share/pixmaps/amelia-wordmark-full-black.png
-    else
-        rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark.svg -o /usr/share/pixmaps/amelia-wordmark.png
+    WORDMARK_WHITE_SRC="/usr/share/pixmaps/amelia-wordmark-full-white-150.svg"
+    if [ ! -f "$WORDMARK_WHITE_SRC" ]; then
+        WORDMARK_WHITE_SRC="/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg"
     fi
-    rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg -o /usr/share/pixmaps/amelia-wordmark-dark.png
-    rsvg-convert -w 200 /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg -o /usr/share/pixmaps/amelia-wordmark-full-white.png
+
+    # Plymouth Spinner Watermark & GDM Greeter Logo (Width 150px per logo-rule.md)
+    rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/plymouth/themes/spinner/watermark.png
+    rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/plymouth/debian-logo.png
+    rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/pixmaps/debian-logo.png
+    rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/pixmaps/amelia-gdm-logo.png
+    rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/images/vendor-logos/logo-text-64.png
+    rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/images/vendor-logos/logo-text-128.png
+
+    # GNOME Settings About PNG fallbacks (Width 200px per logo-rule.md)
+    if [ -f "/usr/share/pixmaps/amelia-wordmark-full-black-200.svg" ]; then
+        rsvg-convert -w 200 /usr/share/pixmaps/amelia-wordmark-full-black-200.svg -o /usr/share/pixmaps/amelia-wordmark.png
+        rsvg-convert -w 200 /usr/share/pixmaps/amelia-wordmark-full-black-200.svg -o /usr/share/pixmaps/amelia-wordmark-full-black.png
+    fi
+    if [ -f "/usr/share/pixmaps/amelia-wordmark-full-white-200.svg" ]; then
+        rsvg-convert -w 200 /usr/share/pixmaps/amelia-wordmark-full-white-200.svg -o /usr/share/pixmaps/amelia-wordmark-dark.png
+        rsvg-convert -w 200 /usr/share/pixmaps/amelia-wordmark-full-white-200.svg -o /usr/share/pixmaps/amelia-wordmark-full-white.png
+    fi
+fi
+
+# Refresh GDM3 greeter dconf database if present
+if [ -f /usr/share/gdm/generate-config ] && [ -f /etc/gdm3/greeter.dconf-defaults ]; then
+    cp -f /etc/gdm3/greeter.dconf-defaults /usr/share/gdm/dconf/90-debian-settings 2>/dev/null || true
+    dconf update 2>/dev/null || true
 fi
 
 # Set default Plymouth theme to Spinner (keeps OEM vendor logo via ACPI BGRT)

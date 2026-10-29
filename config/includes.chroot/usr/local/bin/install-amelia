@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+
+MOVED_FSTAB=0
+
+cleanup() {
+    xhost -si:localuser:root >/dev/null 2>&1 || true
+    if [ "$MOVED_FSTAB" -eq 1 ] && [ -f /etc/fstab.orig.calamares ]; then
+        sudo mv /etc/fstab.orig.calamares /etc/fstab 2>/dev/null || true
+    fi
+}
+
+trap cleanup EXIT INT TERM
+
+# Hide stale live-build /etc/fstab during partitioning in Live session
+if grep -qw "boot=live" /proc/cmdline 2>/dev/null && [ -f /etc/fstab ]; then
+    sudo mv /etc/fstab /etc/fstab.orig.calamares 2>/dev/null && MOVED_FSTAB=1 || true
+fi
+
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+xhost +si:localuser:root >/dev/null 2>&1 || true
+
+sudo -E calamares "$@"
+

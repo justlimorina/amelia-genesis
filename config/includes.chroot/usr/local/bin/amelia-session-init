@@ -1,0 +1,16 @@
+#!/bin/sh
+# Session startup dispatcher for Amelia:
+# - Launches Calamares directly when 'amelia.mode=install' was selected in boot menu
+# - Otherwise opens Amelia Welcome unless disabled by the user
+
+if grep -qw "boot=live" /proc/cmdline 2>/dev/null && grep -qw "amelia.mode=install" /proc/cmdline 2>/dev/null; then
+    exec /usr/local/bin/install-amelia
+fi
+
+DISABLE_FLAG="${XDG_CONFIG_HOME:-$HOME/.config}/amelia/welcome-disabled"
+if [ ! -f "$DISABLE_FLAG" ] && [ -x /usr/bin/amelia-welcome ]; then
+    exec /usr/bin/amelia-welcome
+fi
+
+exit 0
+

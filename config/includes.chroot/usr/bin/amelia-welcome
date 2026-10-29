@@ -1,0 +1,810 @@
+#!/usr/bin/env python3
+"""Amelia Welcome — First-boot & Live companion application for Amelia."""
+
+import locale
+import os
+import platform
+import shutil
+import subprocess
+import threading
+from pathlib import Path
+
+import gi
+
+gi.require_version("Gtk", "4.0")
+gi.require_version("Adw", "1")
+gi.require_version("Gdk", "4.0")
+gi.require_version("Gio", "2.0")
+gi.require_version("GLib", "2.0")
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk
+
+APP_ID = "org.amelia.Welcome"
+ISSUE_URL = "https://github.com/justlimorina/amelia-genesis/issues"
+ONLYOFFICE_ID = "org.onlyoffice.desktopeditors"
+
+DARK_WORDMARK = "/usr/share/pixmaps/amelia-wordmark-full-white-200.svg"
+LIGHT_WORDMARK = "/usr/share/pixmaps/amelia-wordmark-full-black-200.svg"
+FALLBACK_WORDMARK = "/usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg"
+
+OFFICE_MIMES = [
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "application/msword",
+    "application/vnd.oasis.opendocument.text",
+    "application/rtf",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.ms-excel",
+    "application/vnd.oasis.opendocument.spreadsheet",
+    "text/csv",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/vnd.ms-powerpoint",
+    "application/vnd.oasis.opendocument.presentation",
+]
+
+STRINGS = {
+    "en": {
+        "window_title": "Amelia Welcome",
+        "lang_toggle": "Tiếng Việt",
+        "lang_tooltip": "Switch language to Vietnamese",
+        "hero_subtitle_live": "Welcome to Amelia. Explore in a clean live session, enable USB persistence, or install to your drive.",
+        "hero_subtitle_persist": "Welcome back to Amelia. USB Live Persistence is active — your files and settings stay across reboots.",
+        "hero_subtitle_installed": "Welcome to your newly installed Amelia system. Keep your system updated and install essential apps.",
+        "badge_live": "Live Session · Temporary",
+        "badge_persist": "USB Persistence · Active",
+        "badge_installed": "Installed System · testing",
+        "persist_banner": "USB Persistence is active: files, Wi-Fi passwords, and settings remain stored on this USB drive across reboots.",
+        "group_system": "System",
+        "install_title": "Install Amelia",
+        "install_sub": "Launch the graphical installer (ext4, Btrfs, XFS, and optional LUKS encryption)",
+        "install_btn": "Install",
+        "update_title": "System & App Updates",
+        "update_sub": "Check for testing stream updates and Flatpak upgrades in Software",
+        "update_btn": "Updates",
+        "group_apps": "Essential Applications",
+        "oo_title": "ONLYOFFICE Desktop Editors",
+        "oo_sub": "Full .docx, .xlsx, .pptx suite · Works offline after install (~587 MiB via Flathub)",
+        "oo_sub_installed": "Installed and set as default handler for .docx, .xlsx, and .pptx documents",
+        "oo_install_btn": "Install",
+        "oo_installing_btn": "Installing…",
+        "oo_open_btn": "Open",
+        "oo_store_btn": "Software Center",
+        "store_title": "Browse Software Center",
+        "store_sub": "Discover applications from Amelia testing repositories and Flathub",
+        "store_btn": "Open",
+        "group_guides": "Setup, Hardware & Support",
+        "persist_row_title": "USB Live Persistence",
+        "persist_row_sub": "Save documents and settings on your Live USB across reboots",
+        "hw_row_title": "Wi-Fi, Bluetooth & Hardware Drivers",
+        "hw_row_sub": "Connect to wireless networks, configure displays, and check firmware",
+        "bug_row_title": "Report an Issue",
+        "bug_row_sub": "Open the Amelia issue tracker or copy system info for troubleshooting",
+        "bug_open_btn": "Report",
+        "bug_copy_btn": "Copy Info",
+        "startup_title": "Show Amelia Welcome on startup",
+        "startup_sub": "Automatically open this window when signing in to the desktop",
+        # Persistence page
+        "persist_page_title": "USB Live Persistence",
+        "persist_privacy_title": "Privacy & Data Retention Notice",
+        "persist_privacy_desc": "When Persistence is enabled, your USB is no longer a 'wipe-on-reboot' guest medium. Documents, browser sessions, and Wi-Fi credentials remain on the 'persistence' partition until erased.",
+        "persist_steps_group": "How to Set Up USB Persistence",
+        "persist_step1_title": "1. Create a 'persistence' partition",
+        "persist_step1_sub": "Use Disks or GParted to create an ext4 (or Btrfs/XFS) partition on free USB space with label: persistence",
+        "persist_disks_btn": "Open Disks",
+        "persist_gparted_btn": "GParted",
+        "persist_step2_title": "2. Initialize persistence.conf",
+        "persist_step2_sub": "Writes '/ union' into persistence.conf on the 'persistence' partition automatically",
+        "persist_init_btn": "Initialize",
+        "persist_step3_title": "3. Boot 'Amelia Live with Persistence'",
+        "persist_step3_sub": "Restart and pick 'Amelia Live with Persistence' in the boot menu (pick 'Try Amelia' anytime for a clean session)",
+        # Hardware page
+        "hw_page_title": "Wi-Fi, Bluetooth & Drivers",
+        "hw_net_group": "Connectivity & Peripherals",
+        "hw_wifi_title": "Wi-Fi Networks",
+        "hw_wifi_sub": "Intel (iwlwifi), Realtek, Broadcom, and Atheros firmware are pre-installed",
+        "hw_net_title": "Wired & VPN Settings",
+        "hw_net_sub": "Configure Ethernet, DNS, proxy, and VPN connections",
+        "hw_bt_title": "Bluetooth Devices",
+        "hw_bt_sub": "Pair wireless headphones, keyboards, mice, and controllers",
+        "hw_gpu_group": "Graphics & Firmware",
+        "hw_disp_title": "Displays & Refresh Rate",
+        "hw_disp_sub": "Configure resolution, fractional scaling, and multi-monitor layout",
+        "hw_drv_title": "Graphics Drivers Note",
+        "hw_drv_sub": "AMD and Intel GPUs work out of the box via Mesa. For older/NVIDIA GPUs with boot glitches, choose 'Amelia (Safe Graphics)' at boot or install nvidia-driver after disk installation.",
+        "open_settings_btn": "Settings",
+        # Toasts
+        "toast_copied": "System diagnostics copied to clipboard.",
+        "toast_oo_start": "Installing ONLYOFFICE from Flathub in the background…",
+        "toast_oo_done": "ONLYOFFICE installed and set as default for Office files!",
+        "toast_oo_fail": "Could not install ONLYOFFICE automatically. Try Software Center or check Internet.",
+        "toast_persist_ok": "Initialized persistence.conf! Reboot and select 'Amelia Live with Persistence'.",
+        "toast_persist_fail": "No ext4/btrfs/xfs partition labeled 'persistence' found.",
+    },
+    "vi": {
+        "window_title": "Chào mừng đến với Amelia",
+        "lang_toggle": "English",
+        "lang_tooltip": "Chuyển ngôn ngữ sang Tiếng Anh",
+        "hero_subtitle_live": "Chào mừng bạn đến với Amelia. Trải nghiệm phiên Live sạch, bật lưu phiên USB hoặc cài đặt lên ổ cứng.",
+        "hero_subtitle_persist": "Chào mừng trở lại Amelia. Lưu phiên USB (Persistence) đang bật — tệp và thiết lập được giữ lại sau khi khởi động lại.",
+        "hero_subtitle_installed": "Chào mừng bạn đến với hệ thống Amelia đã cài đặt. Hãy kiểm tra cập nhật và cài các ứng dụng thiết yếu.",
+        "badge_live": "Phiên Live · Tạm thời",
+        "badge_persist": "Lưu phiên USB · Đang bật",
+        "badge_installed": "Đã cài đặt · testing",
+        "persist_banner": "Lưu phiên USB đang hoạt động: tài liệu, mật khẩu Wi-Fi và cài đặt sẽ được lưu lại trên USB này qua các lần khởi động.",
+        "group_system": "Hệ thống",
+        "install_title": "Cài đặt Amelia lên máy",
+        "install_sub": "Mở trình cài đặt đồ họa Calamares (hỗ trợ ext4, Btrfs, XFS và mã hóa ổ đĩa LUKS)",
+        "install_btn": "Cài đặt",
+        "update_title": "Cập nhật hệ thống & ứng dụng",
+        "update_sub": "Kiểm tra bản cập nhật nhánh testing và ứng dụng Flatpak trong Kho ứng dụng",
+        "update_btn": "Cập nhật",
+        "group_apps": "Ứng dụng nên có",
+        "oo_title": "ONLYOFFICE Desktop Editors",
+        "oo_sub": "Bộ văn phòng tương thích .docx, .xlsx, .pptx · Chạy offline sau khi cài (~587 MiB từ Flathub)",
+        "oo_sub_installed": "Đã cài đặt và đặt làm ứng dụng mặc định cho .docx, .xlsx, .pptx",
+        "oo_install_btn": "Cài ngay",
+        "oo_installing_btn": "Đang cài…",
+        "oo_open_btn": "Mở",
+        "oo_store_btn": "Kho ứng dụng",
+        "store_title": "Khám phá Kho ứng dụng",
+        "store_sub": "Tìm và cài đặt phần mềm từ kho Amelia testing và Flathub",
+        "store_btn": "Mở",
+        "group_guides": "Hướng dẫn, Phần cứng & Hỗ trợ",
+        "persist_row_title": "Lưu phiên làm việc USB (Persistence)",
+        "persist_row_sub": "Giữ lại tài liệu và thiết lập trên USB Live sau khi khởi động lại",
+        "hw_row_title": "Wi-Fi, Bluetooth & Trình điều khiển",
+        "hw_row_sub": "Kết nối mạng không dây, chỉnh màn hình và kiểm tra firmware phần cứng",
+        "bug_row_title": "Báo lỗi & Góp ý",
+        "bug_row_sub": "Mở trang theo dõi lỗi của Amelia hoặc sao chép thông tin hệ thống",
+        "bug_open_btn": "Báo lỗi",
+        "bug_copy_btn": "Chép cấu hình",
+        "startup_title": "Mở Amelia Welcome khi khởi động",
+        "startup_sub": "Tự động hiển thị cửa sổ này khi đăng nhập vào màn hình chính",
+        # Persistence page
+        "persist_page_title": "Lưu phiên làm việc USB",
+        "persist_privacy_title": "Lưu ý quan trọng về dữ liệu riêng tư",
+        "persist_privacy_desc": "Khi bật Persistence, USB không còn là phiên dùng thử 'tắt máy là xóa sạch'. Tài liệu, phiên trình duyệt và mật khẩu Wi-Fi sẽ nằm lại trên phân vùng 'persistence' cho tới khi bạn xóa.",
+        "persist_steps_group": "Cách thiết lập lưu phiên trên USB",
+        "persist_step1_title": "1. Tạo phân vùng tên 'persistence'",
+        "persist_step1_sub": "Dùng Disks hoặc GParted tạo phân vùng ext4 (hoặc Btrfs/XFS) trên phần trống của USB và đặt nhãn (Label) chính xác là: persistence",
+        "persist_disks_btn": "Mở Disks",
+        "persist_gparted_btn": "GParted",
+        "persist_step2_title": "2. Khởi tạo tệp persistence.conf",
+        "persist_step2_sub": "Tự động ghi cấu hình '/ union' vào tệp persistence.conf trên phân vùng 'persistence'",
+        "persist_init_btn": "Khởi tạo",
+        "persist_step3_title": "3. Chọn 'Amelia Live with Persistence' khi boot",
+        "persist_step3_sub": "Khởi động lại máy và chọn mục 'Amelia Live with Persistence' ở menu boot (vẫn có thể chọn 'Try Amelia' khi cần phiên sạch)",
+        # Hardware page
+        "hw_page_title": "Wi-Fi, Bluetooth & Driver",
+        "hw_net_group": "Kết nối mạng & Thiết bị ngoại vi",
+        "hw_wifi_title": "Mạng Wi-Fi",
+        "hw_wifi_sub": "Đã tích hợp sẵn firmware Intel (iwlwifi), Realtek, Broadcom và Atheros",
+        "hw_net_title": "Mạng dây & VPN",
+        "hw_net_sub": "Thiết lập Ethernet, DNS, proxy và kết nối VPN",
+        "hw_bt_title": "Thiết bị Bluetooth",
+        "hw_bt_sub": "Ghép nối tai nghe, bàn phím, chuột và tay cầm không dây",
+        "hw_gpu_group": "Đồ họa & Phần cứng",
+        "hw_disp_title": "Màn hình & Tần số quét",
+        "hw_disp_sub": "Chỉnh độ phân giải, tỷ lệ hiển thị và đa màn hình",
+        "hw_drv_title": "Lưu ý về card đồ họa (GPU)",
+        "hw_drv_sub": "GPU Intel và AMD hoạt động sẵn qua Mesa. Nếu máy dùng GPU rời gặp lỗi hiển thị khi boot, hãy chọn 'Amelia (Safe Graphics)' ở menu boot hoặc cài gói nvidia-driver sau khi cài lên ổ cứng.",
+        "open_settings_btn": "Cài đặt",
+        # Toasts
+        "toast_copied": "Đã sao chép thông tin hệ thống vào bộ nhớ tạm.",
+        "toast_oo_start": "Đang tải và cài đặt ONLYOFFICE từ Flathub trong nền…",
+        "toast_oo_done": "Đã cài xong ONLYOFFICE và đặt làm mặc định cho tệp văn phòng!",
+        "toast_oo_fail": "Không thể cài tự động ONLYOFFICE. Hãy kiểm tra mạng hoặc mở Kho ứng dụng.",
+        "toast_persist_ok": "Đã khởi tạo persistence.conf! Hãy khởi động lại và chọn 'Amelia Live with Persistence'.",
+        "toast_persist_fail": "Chưa tìm thấy phân vùng ext4/btrfs/xfs mang nhãn 'persistence'.",
+    },
+}
+
+CUSTOM_CSS = """
+.amelia-badge {
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85em;
+    background-color: alpha(#6750A4, 0.18);
+    color: #D0BCFF;
+}
+window.light-mode .amelia-badge {
+    background-color: alpha(#6750A4, 0.12);
+    color: #4F378B;
+}
+.amelia-badge-persist {
+    background-color: alpha(#7D5260, 0.28);
+}
+"""
+
+
+def detect_boot_mode() -> str:
+    """Return 'live', 'persistence', or 'installed'."""
+    cmdline = ""
+    try:
+        cmdline = Path("/proc/cmdline").read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        pass
+
+    tokens = cmdline.split()
+    if "boot=live" not in tokens:
+        return "installed"
+
+    try:
+        mounts = Path("/proc/mounts").read_text(encoding="utf-8", errors="ignore")
+        for line in mounts.splitlines():
+            parts = line.split()
+            if len(parts) >= 2 and parts[1].startswith("/run/live/persistence/"):
+                return "persistence"
+    except OSError:
+        pass
+
+    return "live"
+
+
+def detect_initial_lang() -> str:
+    env_lang = os.environ.get("LANG", "") or os.environ.get("LC_ALL", "")
+    if not env_lang:
+        try:
+            env_lang = locale.getlocale()[0] or ""
+        except Exception:
+            env_lang = ""
+    return "vi" if env_lang.lower().startswith("vi") else "en"
+
+
+def is_onlyoffice_installed() -> bool:
+    exports = [
+        Path("/var/lib/flatpak/exports/share/applications/org.onlyoffice.desktopeditors.desktop"),
+        Path.home() / ".local/share/flatpak/exports/share/applications/org.onlyoffice.desktopeditors.desktop",
+    ]
+    if any(p.exists() for p in exports):
+        return True
+    if shutil.which("flatpak"):
+        res = subprocess.run(
+            ["flatpak", "info", ONLYOFFICE_ID],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+        return res.returncode == 0
+    return False
+
+
+def apply_onlyoffice_mime_defaults() -> None:
+    if not shutil.which("xdg-mime"):
+        return
+    desktop_id = f"{ONLYOFFICE_ID}.desktop"
+    for mime in OFFICE_MIMES:
+        subprocess.run(
+            ["xdg-mime", "default", desktop_id, mime],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=False,
+        )
+
+
+def disable_flag_path() -> Path:
+    cfg = Path(os.environ.get("XDG_CONFIG_HOME", str(Path.home() / ".config")))
+    return cfg / "amelia" / "welcome-disabled"
+
+
+class AmeliaWelcomeWindow(Adw.ApplicationWindow):
+    def __init__(self, app: Adw.Application) -> None:
+        super().__init__(application=app)
+        self.set_default_size(680, 660)
+        self.set_size_request(360, 480)
+
+        self.boot_mode = detect_boot_mode()
+        self.lang = detect_initial_lang()
+        self.oo_installing = False
+        self.oo_installed = is_onlyoffice_installed()
+
+        self.style_mgr = Adw.StyleManager.get_default()
+        self.style_mgr.connect("notify::dark", self._on_theme_changed)
+
+        self.toast_overlay = Adw.ToastOverlay()
+        self.nav_view = Adw.NavigationView()
+        self.toast_overlay.set_child(self.nav_view)
+        self.set_content(self.toast_overlay)
+
+        self._load_css()
+        self._build_ui()
+        self._sync_theme_visuals()
+
+    def t(self, key: str) -> str:
+        return STRINGS[self.lang][key]
+
+    def _load_css(self) -> None:
+        provider = Gtk.CssProvider()
+        provider.load_from_string(CUSTOM_CSS)
+        display = Gdk.Display.get_default()
+        if display is not None:
+            Gtk.StyleContext.add_provider_for_display(
+                display, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+            )
+
+    def _build_ui(self) -> None:
+        # Clear nav stack and rebuild cleanly on language switch
+        main_page = self._create_main_page()
+        self.nav_view.replace([main_page])
+        self.set_title(self.t("window_title"))
+
+    def _create_main_page(self) -> Adw.NavigationPage:
+        toolbar_view = Adw.ToolbarView()
+        header = Adw.HeaderBar()
+
+        lang_btn = Gtk.Button(label=self.t("lang_toggle"))
+        lang_btn.set_tooltip_text(self.t("lang_tooltip"))
+        lang_btn.add_css_class("flat")
+        lang_btn.connect("clicked", self._on_toggle_language)
+        header.pack_end(lang_btn)
+        toolbar_view.add_top_bar(header)
+
+        if self.boot_mode == "persistence":
+            banner = Adw.Banner(title=self.t("persist_banner"))
+            banner.set_revealed(True)
+            toolbar_view.add_top_bar(banner)
+
+        pref_page = Adw.PreferencesPage()
+
+        # Hero Branding Group
+        hero_group = Adw.PreferencesGroup()
+        hero_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
+        hero_box.set_margin_top(6)
+        hero_box.set_margin_bottom(8)
+        hero_box.set_halign(Gtk.Align.CENTER)
+
+        self.logo_picture = Gtk.Picture()
+        self.logo_picture.set_can_shrink(False)
+        self.logo_picture.set_content_fit(Gtk.ContentFit.CONTAIN)
+        self.logo_picture.set_halign(Gtk.Align.CENTER)
+        self._update_logo_file()
+        hero_box.append(self.logo_picture)
+
+        badge_key = {
+            "live": "badge_live",
+            "persistence": "badge_persist",
+            "installed": "badge_installed",
+        }[self.boot_mode]
+        badge = Gtk.Label(label=self.t(badge_key))
+        badge.add_css_class("amelia-badge")
+        if self.boot_mode == "persistence":
+            badge.add_css_class("amelia-badge-persist")
+        badge.set_halign(Gtk.Align.CENTER)
+        hero_box.append(badge)
+
+        sub_key = {
+            "live": "hero_subtitle_live",
+            "persistence": "hero_subtitle_persist",
+            "installed": "hero_subtitle_installed",
+        }[self.boot_mode]
+        subtitle = Gtk.Label(label=self.t(sub_key))
+        subtitle.set_wrap(True)
+        subtitle.set_justify(Gtk.Justification.CENTER)
+        subtitle.set_max_width_chars(58)
+        subtitle.add_css_class("dim-label")
+        hero_box.append(subtitle)
+
+        hero_group.add(hero_box)
+        pref_page.add(hero_group)
+
+        # 1. System Action Group
+        sys_group = Adw.PreferencesGroup(title=self.t("group_system"))
+        if self.boot_mode in ("live", "persistence"):
+            install_row = Adw.ActionRow(
+                title=self.t("install_title"),
+                subtitle=self.t("install_sub"),
+            )
+            install_row.add_prefix(Gtk.Image.new_from_icon_name("drive-harddisk-system-symbolic"))
+            install_btn = Gtk.Button(label=self.t("install_btn"))
+            install_btn.set_valign(Gtk.Align.CENTER)
+            install_btn.add_css_class("suggested-action")
+            install_btn.connect("clicked", lambda *_: self._spawn(["/usr/local/bin/install-amelia"]))
+            install_row.add_suffix(install_btn)
+            install_row.set_activatable_widget(install_btn)
+            sys_group.add(install_row)
+        else:
+            upd_row = Adw.ActionRow(
+                title=self.t("update_title"),
+                subtitle=self.t("update_sub"),
+            )
+            upd_row.add_prefix(Gtk.Image.new_from_icon_name("software-update-available-symbolic"))
+            upd_btn = Gtk.Button(label=self.t("update_btn"))
+            upd_btn.set_valign(Gtk.Align.CENTER)
+            upd_btn.add_css_class("suggested-action")
+            upd_btn.connect("clicked", lambda *_: self._spawn(["gnome-software", "--mode=updates"]))
+            upd_row.add_suffix(upd_btn)
+            upd_row.set_activatable_widget(upd_btn)
+            sys_group.add(upd_row)
+        pref_page.add(sys_group)
+
+        # 2. Essential Apps Group (ONLYOFFICE + Software Center)
+        apps_group = Adw.PreferencesGroup(title=self.t("group_apps"))
+
+        self.oo_row = Adw.ActionRow(
+            title=self.t("oo_title"),
+            subtitle=self.t("oo_sub_installed") if self.oo_installed else self.t("oo_sub"),
+        )
+        self.oo_row.add_prefix(Gtk.Image.new_from_icon_name("x-office-document-symbolic"))
+
+        oo_btn_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        oo_btn_box.set_valign(Gtk.Align.CENTER)
+
+        self.oo_spinner = Gtk.Spinner()
+        self.oo_spinner.set_visible(self.oo_installing)
+        if self.oo_installing:
+            self.oo_spinner.start()
+        oo_btn_box.append(self.oo_spinner)
+
+        if not self.oo_installed:
+            self.oo_store_btn = Gtk.Button(label=self.t("oo_store_btn"))
+            self.oo_store_btn.set_valign(Gtk.Align.CENTER)
+            self.oo_store_btn.connect(
+                "clicked",
+                lambda *_: self._spawn(["gnome-software", f"--details={ONLYOFFICE_ID}"]),
+            )
+            oo_btn_box.append(self.oo_store_btn)
+
+        self.oo_primary_btn = Gtk.Button(
+            label=self.t("oo_open_btn")
+            if self.oo_installed
+            else (self.t("oo_installing_btn") if self.oo_installing else self.t("oo_install_btn"))
+        )
+        self.oo_primary_btn.set_valign(Gtk.Align.CENTER)
+        self.oo_primary_btn.set_sensitive(not self.oo_installing)
+        if not self.oo_installed:
+            self.oo_primary_btn.add_css_class("suggested-action")
+        self.oo_primary_btn.connect("clicked", self._on_onlyoffice_primary_clicked)
+        oo_btn_box.append(self.oo_primary_btn)
+
+        self.oo_row.add_suffix(oo_btn_box)
+        apps_group.add(self.oo_row)
+
+        store_row = Adw.ActionRow(
+            title=self.t("store_title"),
+            subtitle=self.t("store_sub"),
+        )
+        store_row.add_prefix(Gtk.Image.new_from_icon_name("system-software-install-symbolic"))
+        store_btn = Gtk.Button(label=self.t("store_btn"))
+        store_btn.set_valign(Gtk.Align.CENTER)
+        store_btn.connect("clicked", lambda *_: self._spawn(["gnome-software"]))
+        store_row.add_suffix(store_btn)
+        store_row.set_activatable_widget(store_btn)
+        apps_group.add(store_row)
+
+        pref_page.add(apps_group)
+
+        # 3. Guides & Support Group
+        guides_group = Adw.PreferencesGroup(title=self.t("group_guides"))
+
+        if self.boot_mode in ("live", "persistence"):
+            persist_row = Adw.ActionRow(
+                title=self.t("persist_row_title"),
+                subtitle=self.t("persist_row_sub"),
+                activatable=True,
+            )
+            persist_row.add_prefix(Gtk.Image.new_from_icon_name("media-removable-symbolic"))
+            persist_row.add_suffix(Gtk.Image.new_from_icon_name("go-next-symbolic"))
+            persist_row.connect("activated", lambda *_: self.nav_view.push(self._create_persistence_page()))
+            guides_group.add(persist_row)
+
+        hw_row = Adw.ActionRow(
+            title=self.t("hw_row_title"),
+            subtitle=self.t("hw_row_sub"),
+            activatable=True,
+        )
+        hw_row.add_prefix(Gtk.Image.new_from_icon_name("network-wireless-symbolic"))
+        hw_row.add_suffix(Gtk.Image.new_from_icon_name("go-next-symbolic"))
+        hw_row.connect("activated", lambda *_: self.nav_view.push(self._create_hardware_page()))
+        guides_group.add(hw_row)
+
+        bug_row = Adw.ActionRow(
+            title=self.t("bug_row_title"),
+            subtitle=self.t("bug_row_sub"),
+        )
+        bug_row.add_prefix(Gtk.Image.new_from_icon_name("bug-symbolic"))
+        bug_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        bug_box.set_valign(Gtk.Align.CENTER)
+
+        copy_btn = Gtk.Button(label=self.t("bug_copy_btn"))
+        copy_btn.connect("clicked", self._on_copy_sysinfo)
+        bug_box.append(copy_btn)
+
+        report_btn = Gtk.Button(label=self.t("bug_open_btn"))
+        report_btn.connect("clicked", lambda *_: Gio.AppInfo.launch_default_for_uri(ISSUE_URL, None))
+        bug_box.append(report_btn)
+
+        bug_row.add_suffix(bug_box)
+        guides_group.add(bug_row)
+        pref_page.add(guides_group)
+
+        # 4. Startup Preference Group
+        pref_group = Adw.PreferencesGroup()
+        startup_row = Adw.SwitchRow(
+            title=self.t("startup_title"),
+            subtitle=self.t("startup_sub"),
+        )
+        startup_row.set_active(not disable_flag_path().exists())
+        startup_row.connect("notify::active", self._on_startup_toggled)
+        pref_group.add(startup_row)
+        pref_page.add(pref_group)
+
+        toolbar_view.set_content(pref_page)
+        return Adw.NavigationPage.new(toolbar_view, self.t("window_title"))
+
+    def _create_persistence_page(self) -> Adw.NavigationPage:
+        toolbar_view = Adw.ToolbarView()
+        toolbar_view.add_top_bar(Adw.HeaderBar())
+
+        page = Adw.PreferencesPage()
+
+        warn_group = Adw.PreferencesGroup()
+        warn_row = Adw.ActionRow(
+            title=self.t("persist_privacy_title"),
+            subtitle=self.t("persist_privacy_desc"),
+        )
+        warn_row.add_prefix(Gtk.Image.new_from_icon_name("dialog-warning-symbolic"))
+        warn_group.add(warn_row)
+        page.add(warn_group)
+
+        steps_group = Adw.PreferencesGroup(title=self.t("persist_steps_group"))
+
+        step1 = Adw.ActionRow(
+            title=self.t("persist_step1_title"),
+            subtitle=self.t("persist_step1_sub"),
+        )
+        s1_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=6)
+        s1_box.set_valign(Gtk.Align.CENTER)
+        disks_btn = Gtk.Button(label=self.t("persist_disks_btn"))
+        disks_btn.connect("clicked", lambda *_: self._spawn(["gnome-disks"]))
+        s1_box.append(disks_btn)
+        if shutil.which("gparted"):
+            gp_btn = Gtk.Button(label=self.t("persist_gparted_btn"))
+            gp_btn.connect("clicked", lambda *_: self._spawn(["pkexec", "gparted"]))
+            s1_box.append(gp_btn)
+        step1.add_suffix(s1_box)
+        steps_group.add(step1)
+
+        step2 = Adw.ActionRow(
+            title=self.t("persist_step2_title"),
+            subtitle=self.t("persist_step2_sub"),
+        )
+        init_btn = Gtk.Button(label=self.t("persist_init_btn"))
+        init_btn.set_valign(Gtk.Align.CENTER)
+        init_btn.add_css_class("suggested-action")
+        init_btn.connect("clicked", self._on_init_persistence)
+        step2.add_suffix(init_btn)
+        steps_group.add(step2)
+
+        step3 = Adw.ActionRow(
+            title=self.t("persist_step3_title"),
+            subtitle=self.t("persist_step3_sub"),
+        )
+        steps_group.add(step3)
+
+        page.add(steps_group)
+        toolbar_view.set_content(page)
+        return Adw.NavigationPage.new(toolbar_view, self.t("persist_page_title"))
+
+    def _create_hardware_page(self) -> Adw.NavigationPage:
+        toolbar_view = Adw.ToolbarView()
+        toolbar_view.add_top_bar(Adw.HeaderBar())
+
+        page = Adw.PreferencesPage()
+
+        net_group = Adw.PreferencesGroup(title=self.t("hw_net_group"))
+        for title_k, sub_k, icon_name, panel in [
+            ("hw_wifi_title", "hw_wifi_sub", "network-wireless-symbolic", "wifi"),
+            ("hw_net_title", "hw_net_sub", "network-wired-symbolic", "network"),
+            ("hw_bt_title", "hw_bt_sub", "bluetooth-active-symbolic", "bluetooth"),
+        ]:
+            row = Adw.ActionRow(title=self.t(title_k), subtitle=self.t(sub_k))
+            row.add_prefix(Gtk.Image.new_from_icon_name(icon_name))
+            btn = Gtk.Button(label=self.t("open_settings_btn"))
+            btn.set_valign(Gtk.Align.CENTER)
+            btn.connect("clicked", lambda _b, p=panel: self._spawn(["gnome-control-center", p]))
+            row.add_suffix(btn)
+            row.set_activatable_widget(btn)
+            net_group.add(row)
+        page.add(net_group)
+
+        gpu_group = Adw.PreferencesGroup(title=self.t("hw_gpu_group"))
+        disp_row = Adw.ActionRow(
+            title=self.t("hw_disp_title"),
+            subtitle=self.t("hw_disp_sub"),
+        )
+        disp_row.add_prefix(Gtk.Image.new_from_icon_name("video-display-symbolic"))
+        disp_btn = Gtk.Button(label=self.t("open_settings_btn"))
+        disp_btn.set_valign(Gtk.Align.CENTER)
+        disp_btn.connect("clicked", lambda *_: self._spawn(["gnome-control-center", "display"]))
+        disp_row.add_suffix(disp_btn)
+        disp_row.set_activatable_widget(disp_btn)
+        gpu_group.add(disp_row)
+
+        drv_row = Adw.ActionRow(
+            title=self.t("hw_drv_title"),
+            subtitle=self.t("hw_drv_sub"),
+        )
+        drv_row.add_prefix(Gtk.Image.new_from_icon_name("preferences-desktop-display-symbolic"))
+        gpu_group.add(drv_row)
+        page.add(gpu_group)
+
+        toolbar_view.set_content(page)
+        return Adw.NavigationPage.new(toolbar_view, self.t("hw_page_title"))
+
+    def _update_logo_file(self) -> None:
+        if not hasattr(self, "logo_picture"):
+            return
+        candidate = DARK_WORDMARK if self.style_mgr.get_dark() else LIGHT_WORDMARK
+        if not os.path.exists(candidate):
+            candidate = FALLBACK_WORDMARK
+        if os.path.exists(candidate):
+            self.logo_picture.set_filename(candidate)
+
+    def _sync_theme_visuals(self) -> None:
+        if self.style_mgr.get_dark():
+            self.remove_css_class("light-mode")
+        else:
+            self.add_css_class("light-mode")
+        self._update_logo_file()
+
+    def _on_theme_changed(self, *_args: object) -> None:
+        self._sync_theme_visuals()
+
+    def _on_toggle_language(self, *_args: object) -> None:
+        self.lang = "en" if self.lang == "vi" else "vi"
+        self.oo_installed = is_onlyoffice_installed()
+        self._build_ui()
+        self._sync_theme_visuals()
+
+    def _on_startup_toggled(self, switch_row: Adw.SwitchRow, _pspec: object) -> None:
+        flag = disable_flag_path()
+        try:
+            if switch_row.get_active():
+                flag.unlink(missing_ok=True)
+            else:
+                flag.parent.mkdir(parents=True, exist_ok=True)
+                flag.write_text("disabled\n", encoding="utf-8")
+        except OSError:
+            pass
+
+    def _on_onlyoffice_primary_clicked(self, *_args: object) -> None:
+        if is_onlyoffice_installed():
+            self.oo_installed = True
+            apply_onlyoffice_mime_defaults()
+            self._spawn(["flatpak", "run", ONLYOFFICE_ID])
+            return
+
+        if self.oo_installing:
+            return
+
+        self.oo_installing = True
+        self.oo_primary_btn.set_sensitive(False)
+        self.oo_primary_btn.set_label(self.t("oo_installing_btn"))
+        self.oo_spinner.set_visible(True)
+        self.oo_spinner.start()
+        self._show_toast(self.t("toast_oo_start"))
+
+        def worker() -> None:
+            rc = 1
+            if shutil.which("flatpak"):
+                proc = subprocess.run(
+                    ["flatpak", "install", "--noninteractive", "-y", "flathub", ONLYOFFICE_ID],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    check=False,
+                )
+                rc = proc.returncode
+                if rc != 0:
+                    # Fallback to user installation if system-wide polkit was dismissed
+                    proc_user = subprocess.run(
+                        [
+                            "flatpak",
+                            "remote-add",
+                            "--user",
+                            "--if-not-exists",
+                            "flathub",
+                            "/etc/flatpak/remotes.d/flathub.flatpakrepo",
+                        ],
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                        check=False,
+                    )
+                    if proc_user.returncode == 0:
+                        proc2 = subprocess.run(
+                            [
+                                "flatpak",
+                                "install",
+                                "--user",
+                                "--noninteractive",
+                                "-y",
+                                "flathub",
+                                ONLYOFFICE_ID,
+                            ],
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT,
+                            text=True,
+                            check=False,
+                        )
+                        rc = proc2.returncode
+
+            GLib.idle_add(self._on_onlyoffice_install_finished, rc == 0)
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _on_onlyoffice_install_finished(self, ok: bool) -> bool:
+        self.oo_installing = False
+        self.oo_installed = ok or is_onlyoffice_installed()
+        if self.oo_installed:
+            apply_onlyoffice_mime_defaults()
+            self._show_toast(self.t("toast_oo_done"))
+        else:
+            self._show_toast(self.t("toast_oo_fail"))
+        self._build_ui()
+        self._sync_theme_visuals()
+        return GLib.SOURCE_REMOVE
+
+    def _on_init_persistence(self, btn: Gtk.Button) -> None:
+        btn.set_sensitive(False)
+
+        def worker() -> None:
+            proc = subprocess.run(
+                ["pkexec", "/usr/libexec/amelia-init-persistence"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                check=False,
+            )
+            GLib.idle_add(self._on_init_persistence_done, btn, proc.returncode == 0)
+
+        threading.Thread(target=worker, daemon=True).start()
+
+    def _on_init_persistence_done(self, btn: Gtk.Button, ok: bool) -> bool:
+        btn.set_sensitive(True)
+        self._show_toast(self.t("toast_persist_ok") if ok else self.t("toast_persist_fail"))
+        return GLib.SOURCE_REMOVE
+
+    def _on_copy_sysinfo(self, *_args: object) -> None:
+        info_lines = [
+            "System: Amelia (testing)",
+            f"Mode: {self.boot_mode}",
+            f"Kernel: {platform.release()}",
+            f"Arch: {platform.machine()}",
+            f"Session: {os.environ.get('XDG_SESSION_TYPE', 'wayland')}",
+        ]
+        display = Gdk.Display.get_default()
+        if display is not None:
+            display.get_clipboard().set("\n".join(info_lines))
+            self._show_toast(self.t("toast_copied"))
+
+    def _show_toast(self, message: str) -> None:
+        toast = Adw.Toast.new(message)
+        toast.set_timeout(4)
+        self.toast_overlay.add_toast(toast)
+
+    @staticmethod
+    def _spawn(cmd: list[str]) -> None:
+        try:
+            subprocess.Popen(cmd, start_new_session=True)
+        except OSError:
+            pass
+
+
+class AmeliaWelcomeApp(Adw.Application):
+    def __init__(self) -> None:
+        super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.DEFAULT_FLAGS)
+
+    def do_activate(self) -> None:
+        win = self.props.active_window
+        if not win:
+            win = AmeliaWelcomeWindow(self)
+        win.present()
+
+
+def main() -> int:
+    app = AmeliaWelcomeApp()
+    return app.run(None)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+

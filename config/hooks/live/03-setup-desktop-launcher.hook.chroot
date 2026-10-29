@@ -1,7 +1,18 @@
 #!/bin/sh
 set -e
 
-echo "Setting up Calamares desktop launcher for Amelia Live user..."
+echo "Setting up Calamares desktop launcher and cleaning duplicate Debian launchers..."
+
+# Remove/divert duplicate Debian Calamares launchers (red Debian swirl icon on dock/desktop)
+for dup in \
+    /usr/share/applications/calamares-install-debian.desktop \
+    /etc/xdg/autostart/calamares-desktop-icon.desktop
+do
+    if ! dpkg-divert --list "$dup" 2>/dev/null | grep -q "$dup"; then
+        dpkg-divert --local --rename --divert "${dup}.disabled" --add "$dup" || true
+    fi
+    rm -f "$dup" || true
+done
 
 if [ -f /etc/skel/Desktop/install-amelia.desktop ]; then
     chmod +x /etc/skel/Desktop/install-amelia.desktop

@@ -1,0 +1,9 @@
+# GRUB boot loader configuration for Amelia
+GRUB_DEFAULT=0
+GRUB_TIMEOUT=5
+GRUB_DISTRIBUTOR='Amelia'
+GRUB_CMDLINE_LINUX_DEFAULT='quiet splash'
+GRUB_CMDLINE_LINUX=''
+GRUB_BACKGROUND='/usr/share/images/desktop-base/desktop-grub.png'
+GRUB_DISABLE_OS_PROBER=false
+
