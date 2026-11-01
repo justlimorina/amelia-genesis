@@ -5,56 +5,80 @@ echo "Configuring Amelia Branding for Plymouth, GDM & GNOME Settings..."
 
 # Create necessary icon & theme directories
 mkdir -p /usr/share/plymouth/themes/spinner
+mkdir -p /usr/share/plymouth/themes/bgrt
 mkdir -p /usr/share/pixmaps
 mkdir -p /usr/share/icons/hicolor/scalable/apps
 mkdir -p /usr/share/icons/vendor/scalable/emblems
 mkdir -p /usr/share/icons/desktop-base/scalable/emblems
 mkdir -p /usr/share/images/vendor-logos
+mkdir -p /usr/share/desktop-base/debian-logos
 
-# Ensure SVG logo files are present in system locations
+# 1. Ensure SVG logo files are present in system locations
 if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-white.svg" ]; then
-    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/
-    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg
-    cp /etc/calamares/branding/amelia/amelia-wordmark.svg /usr/share/icons/hicolor/scalable/apps/
-    cp /etc/calamares/branding/amelia/amelia_logo.svg /usr/share/icons/hicolor/scalable/apps/
+    cp -f /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/
+    cp -f /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/icons/hicolor/scalable/apps/amelia-wordmark-dark.svg
+    cp -f /etc/calamares/branding/amelia/amelia-wordmark.svg /usr/share/icons/hicolor/scalable/apps/
+    cp -f /etc/calamares/branding/amelia/amelia_logo.svg /usr/share/icons/hicolor/scalable/apps/
 
-    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/pixmaps/
-    cp /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/pixmaps/amelia-wordmark-dark.svg
-    cp /etc/calamares/branding/amelia/amelia-wordmark.svg /usr/share/pixmaps/
-    cp /etc/calamares/branding/amelia/amelia_logo.svg /usr/share/pixmaps/
+    cp -f /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/pixmaps/
+    cp -f /etc/calamares/branding/amelia/amelia-wordmark-full-white.svg /usr/share/pixmaps/amelia-wordmark-dark.svg
+    cp -f /etc/calamares/branding/amelia/amelia-wordmark.svg /usr/share/pixmaps/
+    cp -f /etc/calamares/branding/amelia/amelia_logo.svg /usr/share/pixmaps/
 fi
 
 if [ -f "/etc/calamares/branding/amelia/amelia-wordmark-full-black.svg" ]; then
-    cp /etc/calamares/branding/amelia/amelia-wordmark-full-black.svg /usr/share/icons/hicolor/scalable/apps/
-    cp /etc/calamares/branding/amelia/amelia-wordmark-full-black.svg /usr/share/pixmaps/
+    cp -f /etc/calamares/branding/amelia/amelia-wordmark-full-black.svg /usr/share/icons/hicolor/scalable/apps/
+    cp -f /etc/calamares/branding/amelia/amelia-wordmark-full-black.svg /usr/share/pixmaps/
 fi
 
-# Overwrite Debian desktop-base emblems so all alternatives resolve to 200px Amelia wordmark
+# 2. Overwrite Debian desktop-base emblems so all alternatives resolve to 200px Amelia wordmark
 if [ -f "/usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg" ]; then
     cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian.svg 2>/dev/null || true
     cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor-white.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian-white.svg 2>/dev/null || true
     cp -f /usr/share/icons/vendor/scalable/emblems/emblem-vendor-symbolic.svg /usr/share/icons/desktop-base/scalable/emblems/emblem-debian-symbolic.svg 2>/dev/null || true
 fi
 
-# Replace distributor-logo-debian across Papirus icon theme so no Debian swirls remain
+# 3. Replace distributor-logo-debian across Papirus icon theme so no Debian swirls remain
 find /usr/share/icons/Papirus -name "distributor-logo-debian.svg" -exec cp -f /usr/share/icons/hicolor/scalable/apps/amelia_logo.svg {} \; 2>/dev/null || true
 find /usr/share/icons/Papirus -name "debian-logo.svg" -exec cp -f /usr/share/icons/hicolor/scalable/apps/amelia_logo.svg {} \; 2>/dev/null || true
 find /usr/share/icons/Papirus -name "debian-swirl.svg" -exec cp -f /usr/share/icons/hicolor/scalable/apps/amelia_logo.svg {} \; 2>/dev/null || true
 
-# Render PNG assets using rsvg-convert (150px for Plymouth & GDM, 200px for Settings)
+# 4. Render PNG assets using rsvg-convert (150px for Plymouth & GDM, 200px for Settings)
 if command -v rsvg-convert >/dev/null 2>&1; then
     WORDMARK_WHITE_SRC="/usr/share/pixmaps/amelia-wordmark-full-white-150.svg"
     if [ ! -f "$WORDMARK_WHITE_SRC" ]; then
         WORDMARK_WHITE_SRC="/usr/share/icons/hicolor/scalable/apps/amelia-wordmark-full-white.svg"
     fi
 
-    # Plymouth Spinner Watermark & GDM Greeter Logo (Width 150px per logo-rule.md)
+    # Plymouth Watermark & Logos (Width 150px per logo-rule.md)
     rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/plymouth/themes/spinner/watermark.png
     rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/plymouth/debian-logo.png
     rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/pixmaps/debian-logo.png
     rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/pixmaps/amelia-gdm-logo.png
     rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/images/vendor-logos/logo-text-64.png
     rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o /usr/share/images/vendor-logos/logo-text-128.png
+
+    # Overwrite ALL desktop-base debian-logos with Amelia 150px wordmark
+    for logo_f in /usr/share/desktop-base/debian-logos/logo-*.png /usr/share/desktop-base/debian-logos/logo*.png; do
+        if [ -f "$logo_f" ] || [ -L "$logo_f" ]; then
+            rm -f "$logo_f"
+            rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o "$logo_f"
+        fi
+    done
+    cp -f "$WORDMARK_WHITE_SRC" /usr/share/desktop-base/debian-logos/logo.svg 2>/dev/null || true
+    cp -f "$WORDMARK_WHITE_SRC" /usr/share/desktop-base/debian-logos/logo-text.svg 2>/dev/null || true
+    cp -f "$WORDMARK_WHITE_SRC" /usr/share/desktop-base/debian-logos/logo-text-version.svg 2>/dev/null || true
+
+    # Overwrite Debian swirl in fallback Plymouth themes (ceratopsian, emerald, etc.)
+    for theme_dir in /usr/share/plymouth/themes/*; do
+        if [ -d "$theme_dir" ]; then
+            for img_name in logo.png debian.png debian_logo.png logo+emerald.png logo_circle.png logo_in_circle.png; do
+                if [ -f "${theme_dir}/${img_name}" ]; then
+                    rsvg-convert -w 150 "$WORDMARK_WHITE_SRC" -o "${theme_dir}/${img_name}"
+                fi
+            done
+        fi
+    done
 
     # GNOME Settings About PNG fallbacks (Width 200px per logo-rule.md)
     if [ -f "/usr/share/pixmaps/amelia-wordmark-full-black-200.svg" ]; then
@@ -67,18 +91,43 @@ if command -v rsvg-convert >/dev/null 2>&1; then
     fi
 fi
 
-# Refresh GDM3 greeter dconf database if present
+# 5. Refresh GDM3 greeter dconf database if present
 if [ -f /usr/share/gdm/generate-config ] && [ -f /etc/gdm3/greeter.dconf-defaults ]; then
     cp -f /etc/gdm3/greeter.dconf-defaults /usr/share/gdm/dconf/90-debian-settings 2>/dev/null || true
     dconf update 2>/dev/null || true
 fi
 
-# Set default Plymouth theme to Spinner (keeps OEM vendor logo via ACPI BGRT)
-if command -v plymouth-set-default-theme >/dev/null 2>&1; then
-    plymouth-set-default-theme -R spinner || true
+# 6. Configure Plymouth default to 'bgrt' (Spinner with OEM hardware vendor logo via ACPI BGRT per logo-rule.md)
+THEME_TARGET="bgrt"
+if [ ! -d "/usr/share/plymouth/themes/bgrt" ]; then
+    THEME_TARGET="spinner"
 fi
 
-# Update icon cache
+mkdir -p /etc/plymouth /usr/share/plymouth
+cat > /usr/share/plymouth/plymouthd.defaults << PLY_DEF
+[Daemon]
+Theme=${THEME_TARGET}
+ShowDelay=0
+DeviceTimeout=8
+PLY_DEF
+
+cat > /etc/plymouth/plymouthd.conf << PLY_CONF
+[Daemon]
+Theme=${THEME_TARGET}
+ShowDelay=0
+DeviceTimeout=8
+PLY_CONF
+
+if command -v plymouth-set-default-theme >/dev/null 2>&1; then
+    plymouth-set-default-theme "${THEME_TARGET}" || true
+fi
+
+# 7. Update initramfs so new watermark and bgrt theme are included in boot image
+if command -v update-initramfs >/dev/null 2>&1; then
+    update-initramfs -u || true
+fi
+
+# 8. Update icon cache
 if command -v gtk-update-icon-cache >/dev/null 2>&1; then
     gtk-update-icon-cache -f /usr/share/icons/hicolor || true
     gtk-update-icon-cache -f /usr/share/icons/vendor || true

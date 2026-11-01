@@ -27,6 +27,16 @@ if [ ! -f "$INIT_FLAG" ] && command -v dconf >/dev/null 2>&1; then
     touch "$INIT_FLAG"
 fi
 
+# Mark desktop shortcuts as trusted so GNOME DING displays launcher icon & label
+if [ -d "$HOME/Desktop" ]; then
+    for desktop_file in "$HOME"/Desktop/*.desktop; do
+        if [ -f "$desktop_file" ]; then
+            chmod +x "$desktop_file" 2>/dev/null || true
+            gio set "$desktop_file" metadata::trusted true 2>/dev/null || true
+        fi
+    done
+fi
+
 if grep -qw "boot=live" /proc/cmdline 2>/dev/null && grep -qw "amelia.mode=install" /proc/cmdline 2>/dev/null; then
     exec /usr/local/bin/install-amelia
 fi
