@@ -7,9 +7,21 @@ rm -f /home/*/Desktop/install-amelia.desktop
 rm -f /usr/share/applications/install-amelia.desktop
 rm -f /usr/local/bin/install-amelia
 rm -f /etc/sudoers.d/live-user
-rm -f /etc/gdm3/custom.conf
 rm -f /usr/libexec/amelia-init-persistence
 rm -f /usr/share/polkit-1/actions/org.amelia.persistence.policy
+
+# Disable automatic login from the Live session on the installed system
+# (Preserves AutomaticLogin if Calamares displaymanager configured it for a non-live user)
+rm -f /etc/gdm3/custom.conf
+if [ -f /etc/gdm3/daemon.conf ]; then
+    sed -i -e '/^[[:space:]]*TimedLogin/d' /etc/gdm3/daemon.conf
+    if grep -Eq '^[[:space:]]*AutomaticLogin[[:space:]]*=[[:space:]]*user([[:space:]]|$)' /etc/gdm3/daemon.conf; then
+        sed -i \
+            -e '/^[[:space:]]*AutomaticLoginEnable[[:space:]]*=/d' \
+            -e '/^[[:space:]]*AutomaticLogin[[:space:]]*=/d' \
+            /etc/gdm3/daemon.conf
+    fi
+fi
 
 # Clean up any leftover live 'user' home directory if Calamares created a different user
 if ! id user >/dev/null 2>&1 && [ -d /home/user ]; then
