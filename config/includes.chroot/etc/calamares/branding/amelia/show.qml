@@ -60,7 +60,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Nền tảng Debian Stable vững chắc kết hợp trình quản lý gói Nix hiện đại."
+                        text: "Môi trường làm việc ổn định, tinh gọn và bền bỉ trên nền tảng Debian Stable."
                         font.pixelSize: 13
                         color: "#49454e"
                         Layout.alignment: Qt.AlignHCenter
@@ -87,7 +87,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Sức mạnh kép từ Nix Flakes & Flatpak"
+                        text: "Môi trường GNOME tối giản & Flatpak"
                         font.pixelSize: 20
                         font.bold: true
                         color: "#6650a4"
@@ -95,7 +95,7 @@ Presentation {
                     }
 
                     Label {
-                        text: "Hơn 120.000 gói phần mềm mới nhất từ Nixpkgs cùng kho ứng dụng đồ họa Flathub."
+                        text: "Hệ thống tinh gọn, không bloatware, sẵn sàng cài đặt ứng dụng phong phú qua Flatpak."
                         font.pixelSize: 13
                         color: "#49454e"
                         Layout.alignment: Qt.AlignHCenter

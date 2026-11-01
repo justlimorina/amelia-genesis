@@ -26,9 +26,6 @@
     <a href="https://flathub.org/">
       <img src="https://img.shields.io/badge/G%C3%B3i%20%E1%BB%A9ng%20d%E1%BB%A5ng-Flatpak%20%7C%20Flathub-4B32C3?style=flat&logo=flatpak&logoColor=white" alt="Flatpak">
     </a>
-    <a href="https://nixos.org/">
-      <img src="https://img.shields.io/badge/Nix-Flakes%20Ready-5277C3?style=flat&logo=nixos&logoColor=white" alt="Nix Flakes">
-    </a>
     <a href="https://calamares.io/">
       <img src="https://img.shields.io/badge/Tr%C3%ACnh%20c%C3%A0i%20%C4%91%E1%BA%B7t-Calamares-5c3b88?style=flat" alt="Calamares">
     </a>
@@ -70,14 +67,14 @@
 
 Amelia Linux được phát triển và duy trì song song trên hai nhánh chuyên biệt:
 
-| Đặc điểm | **Amelia Linux: Charlotte** (`main`) | **Amelia Linux: Nicole** (`nix`) |
+| Đặc điểm | **Amelia Linux: Charlotte** (`charlotte`) | **Amelia Linux: Nicole** (`nicole`) |
 | :--- | :--- | :--- |
-| **Nhánh Git** | `main` | `nix` |
+| **Nhánh Git** | `charlotte` | `nicole` |
 | **Hệ thống nền tảng** | Debian Testing (`testing`) | Debian Stable (`stable`) |
 | **Môi trường Desktop** | GNOME tối giản (`gnome-core`) | GNOME tối giản (`gnome-core`) |
-| **Quản lý phần mềm** | APT + Flatpak (kích hoạt Flathub sẵn) | **Nix Flakes** + Flatpak + APT |
-| **Kho ứng dụng** | Nhánh Debian Testing + Flathub | Hơn 120.000 gói từ `nixpkgs` + Flathub |
-| **Đối tượng phù hợp** | Người dùng muốn công nghệ mới nhất, trải nghiệm mượt mà | Lập trình viên, kỹ sư phần mềm, người cần môi trường tái lập (reproducible) |
+| **Quản lý phần mềm** | APT + Flatpak (kích hoạt Flathub sẵn) | APT + Flatpak (kích hoạt Flathub sẵn) |
+| **Kho ứng dụng** | Nhánh Debian Testing + Flathub | Nhánh Debian Stable LTS + Flathub |
+| **Đối tượng phù hợp** | Người dùng muốn công nghệ mới nhất, nhân Linux và GNOME mới | Máy trạm làm việc, máy chủ, người ưu tiên sự ổn định tuyệt đối dài hạn |
 
 ---
 
@@ -93,21 +90,20 @@ Amelia Linux được phát triển và duy trì song song trên hai nhánh chuy
 
 ### 💿 Trình cài đặt Calamares đồ họa tùy biến
 - Giao diện Calamares đồng bộ theo chủ đề Amelia.
-- Tự động thiết lập cấu trúc phân vùng tiên tiến: Btrfs subvolumes (`/@`, `/@home`, `/@nix`), ext4, XFS và tùy chọn mã hóa ổ đĩa toàn diện bằng LUKS.
+- Tự động thiết lập cấu trúc phân vùng tiên tiến: Btrfs subvolumes (`/@`, `/@home`), ext4, XFS và tùy chọn mã hóa ổ đĩa toàn diện bằng LUKS.
 
 ### 🛠️ Trung tâm hỗ trợ Amelia Welcome Hub
 - Ứng dụng đồng hành viết bằng GTK4 và Libadwaita tự động mở khi vào hệ thống:
   - **Cài đặt 1-Click ứng dụng phổ biến**: Google Chrome, VS Code, Steam, Discord, Spotify, Heroic Games Launcher...
   - **Công cụ hệ thống**: Phím tắt tùy biến giao diện, điểm khôi phục nhanh Timeshift, phát hiện và cài đặt driver card đồ họa NVIDIA chính thức, khởi tạo phân vùng USB persistence.
-  - **Nix Hub** *(trên bản Nicole)*: Giám sát trạng thái daemon, nâng cấp gói `nix profile upgrade`, dọn dẹp dung lượng store và danh mục lệnh Flakes thông dụng kèm nút sao chép nhanh.
 
 ### 📄 Tích hợp ONLYOFFICE theo nhu cầu
 - Dễ dàng cài đặt trực tiếp từ GNOME Software hoặc Amelia Welcome mà không làm phình dung lượng tệp tin ISO ban đầu.
 - Tự động gán làm trình xử lý mặc định cho các định dạng văn phòng `.docx`, `.xlsx`, `.pptx`.
 
 ### 🎨 Nhận diện thương hiệu tinh tế
-- Theme bootloader GRUB (UEFI & BIOS) và Syslinux mang bản sắc màu tím thương hiệu Amelia.
-- Theme khởi động Plymouth Spinner giữ nguyên logo phần cứng OEM của máy tính.
+- Theme bootloader GRUB (UEFI & BIOS) và Syslinux mang bản sắc Amelia.
+- Theme khởi động Plymouth BGRT/Spinner giữ nguyên logo phần cứng OEM của máy tính.
 - Logo trong phần Giới thiệu (About) của Cài đặt hệ thống (GNOME Settings) tự động chuyển đổi thông minh giữa chế độ Sáng (Light) và Tối (Dark).
 
 ---
@@ -125,21 +121,20 @@ sudo apt update
 sudo apt install -y live-build debootstrap git gcc
 ```
 
-### Biên dịch bản Amelia Linux: Charlotte (`main`)
+### Biên dịch bản Amelia Linux: Charlotte (`charlotte`)
 
 ```bash
-git clone https://github.com/justlimorina/amelia-genesis.git
+git clone -b charlotte https://github.com/justlimorina/amelia-genesis.git
 cd amelia-genesis
-git checkout main
 chmod +x build.sh
 ./build.sh
 ```
 
-### Biên dịch bản Amelia Linux: Nicole (`nix`)
+### Biên dịch bản Amelia Linux: Nicole (`nicole`)
 
 ```bash
-git clone -b nix https://github.com/justlimorina/amelia-genesis.git amelia-with-nix
-cd amelia-with-nix
+git clone -b nicole https://github.com/justlimorina/amelia-genesis.git amelia-nicole
+cd amelia-nicole
 chmod +x build.sh
 ./build.sh
 ```
@@ -169,4 +164,3 @@ Mọi sự đóng góp từ cộng đồng đều được hoan nghênh nhiệt 
 Các tập lệnh, tệp cấu hình và công cụ phát triển riêng của Amelia Linux (bao gồm Amelia Welcome) được phát hành theo [Giấy phép Công cộng GNU v3.0 (GPL-3.0)](LICENSE). Các gói phần mềm upstream của Debian, hình ảnh và thành phần từ bên thứ ba tuân theo giấy phép gốc tương ứng.
 
 <p align="right">(<a href="#readme-top">lên đầu trang ↑</a>)</p>
-

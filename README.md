@@ -26,9 +26,6 @@
     <a href="https://flathub.org/">
       <img src="https://img.shields.io/badge/Packaging-Flatpak%20%7C%20Flathub-4B32C3?style=flat&logo=flatpak&logoColor=white" alt="Flatpak">
     </a>
-    <a href="https://nixos.org/">
-      <img src="https://img.shields.io/badge/Nix-Flakes%20Ready-5277C3?style=flat&logo=nixos&logoColor=white" alt="Nix Flakes">
-    </a>
     <a href="https://calamares.io/">
       <img src="https://img.shields.io/badge/Installer-Calamares-5c3b88?style=flat" alt="Calamares">
     </a>
@@ -70,14 +67,14 @@
 
 Amelia Linux is maintained across two parallel branches, catering to different workflow requirements:
 
-| Feature | **Amelia Linux: Charlotte** (`main`) | **Amelia Linux: Nicole** (`nix`) |
+| Feature | **Amelia Linux: Charlotte** (`charlotte`) | **Amelia Linux: Nicole** (`nicole`) |
 | :--- | :--- | :--- |
-| **Branch** | `main` | `nix` |
+| **Branch** | `charlotte` | `nicole` |
 | **Base System** | Debian Testing (`testing`) | Debian Stable (`stable`) |
 | **Desktop Environment** | Minimal GNOME (`gnome-core`) | Minimal GNOME (`gnome-core`) |
-| **Package Management** | APT + Flatpak (Flathub out-of-the-box) | **Nix Flakes** + Flatpak + APT |
-| **Software Repository** | Debian Testing stream + Flathub | 120,000+ packages via `nixpkgs` + Flathub |
-| **Target Audience** | Users desiring cutting-edge packages and newer GNOME versions | Developers, power users, and engineers seeking reproducible environments |
+| **Package Management** | APT + Flatpak (Flathub out-of-the-box) | APT + Flatpak (Flathub out-of-the-box) |
+| **Software Repository** | Debian Testing stream + Flathub | Debian Stable LTS stream + Flathub |
+| **Target Audience** | Users desiring cutting-edge packages, newer kernels, and latest GNOME | Workstations, servers, and users prioritizing long-term rock-solid stability |
 
 ---
 
@@ -93,13 +90,12 @@ Amelia Linux is maintained across two parallel branches, catering to different w
 
 ### 💿 Calamares Graphical Installer
 - Tailored Amelia theme and customized Calamares pipeline.
-- Flexible partitioning: automatic Btrfs subvolumes (`/@`, `/@home`, `/@nix`), ext4, XFS, and full-disk LUKS encryption.
+- Flexible partitioning: automatic Btrfs subvolumes (`/@`, `/@home`), ext4, XFS, and full-disk LUKS encryption.
 
 ### 🛠️ Amelia Welcome Hub
 - First-boot interactive companion application built with GTK4 and Libadwaita.
 - **1-Click Popular App Installer**: Google Chrome, VS Code, Steam, Discord, Spotify, Heroic Games Launcher, and more.
 - **System Tools & Maintenance**: Desktop customization shortcuts, Timeshift restore points, proprietary NVIDIA driver detector and installer, and USB persistence initializers.
-- **Nix Hub** *(on Nicole edition)*: Daemon status indicators, 1-click `nix profile upgrade`, store garbage collection, and curated command snippets.
 
 ### 📄 On-Demand ONLYOFFICE Integration
 - Discoverable in GNOME Software Center and Amelia Welcome without inflating ISO download size.
@@ -107,7 +103,7 @@ Amelia Linux is maintained across two parallel branches, catering to different w
 
 ### 🎨 Refined Brand Identity
 - Custom GRUB (UEFI & BIOS) and Syslinux boot themes.
-- Plymouth Spinner theme preserving your computer manufacturer's OEM BGRT boot logo.
+- Plymouth BGRT/Spinner theme preserving your computer manufacturer's OEM boot logo.
 - Native GNOME Settings About panel logo supporting automatic Dark & Light mode switching.
 
 ---
@@ -125,21 +121,20 @@ sudo apt update
 sudo apt install -y live-build debootstrap git gcc
 ```
 
-### Build Amelia Linux: Charlotte (`main`)
+### Build Amelia Linux: Charlotte (`charlotte`)
 
 ```bash
-git clone https://github.com/justlimorina/amelia-genesis.git
+git clone -b charlotte https://github.com/justlimorina/amelia-genesis.git
 cd amelia-genesis
-git checkout main
 chmod +x build.sh
 ./build.sh
 ```
 
-### Build Amelia Linux: Nicole (`nix`)
+### Build Amelia Linux: Nicole (`nicole`)
 
 ```bash
-git clone -b nix https://github.com/justlimorina/amelia-genesis.git amelia-with-nix
-cd amelia-with-nix
+git clone -b nicole https://github.com/justlimorina/amelia-genesis.git amelia-nicole
+cd amelia-nicole
 chmod +x build.sh
 ./build.sh
 ```
@@ -169,4 +164,3 @@ Contributions are warmly welcomed! Feel free to report bugs, suggest features, o
 Amelia Linux scripts, configuration files, and tools (including Amelia Welcome) are released under the [GNU General Public License v3.0 (GPL-3.0)](LICENSE). Upstream Debian packages, third-party artwork, and desktop components remain under their respective licenses.
 
 <p align="right">(<a href="#readme-top">back to top ↑</a>)</p>
-
