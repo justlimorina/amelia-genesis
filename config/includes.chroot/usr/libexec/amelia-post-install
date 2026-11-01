@@ -7,14 +7,14 @@ rm -f /home/*/Desktop/install-amelia.desktop
 rm -f /usr/share/applications/install-amelia.desktop
 rm -f /usr/local/bin/install-amelia
 rm -f /etc/sudoers.d/live-user
-rm -f /etc/gdm3/custom.conf
 rm -f /usr/libexec/amelia-init-persistence
 rm -f /usr/share/polkit-1/actions/org.amelia.persistence.policy
 
-# Clean up any leftover live 'user' home directory if Calamares created a different user
-if ! id user >/dev/null 2>&1 && [ -d /home/user ]; then
-    rm -rf /home/user
-fi
+# Disable automatic login from the Live session on the installed system
+sed -i \
+    -e '/^[[:space:]]*AutomaticLoginEnable[[:space:]]*=/d' \
+    -e '/^[[:space:]]*AutomaticLogin[[:space:]]*=/d' \
+    /etc/gdm3/custom.conf /etc/gdm3/daemon.conf
 
 # 2. Update GNOME favorite-apps on installed system (remove install-amelia.desktop)
 SCHEMA_OVERRIDE="/usr/share/glib-2.0/schemas/99_amelia_settings.gschema.override"
