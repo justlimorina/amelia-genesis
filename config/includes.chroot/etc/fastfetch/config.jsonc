@@ -1,7 +1,12 @@
 {
   "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
   "logo": {
-    "type": "small",
+    "source": "/etc/fastfetch/logo.txt",
+    "type": "file",
+    "color": {
+      "1": "magenta",
+      "2": "light_magenta"
+    },
     "padding": {
       "top": 1,
       "left": 2,
@@ -17,7 +22,7 @@
     {
       "type": "os",
       "key": "OS",
-      "format": "{3} {8}"
+      "format": "{3}"
     },
     {
       "type": "kernel",
