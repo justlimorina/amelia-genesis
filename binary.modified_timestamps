@@ -2,7 +2,7 @@ d binary
 d binary/live
 f binary/live/filesystem.squashfs
 f binary/live/filesystem.packages
-f binary/live/initrd.img-7.2.12+deb14-amd64
+f binary/live/initrd.img-6.12.113+deb13-amd64
 d binary/boot
 d binary/boot/grub
 f binary/boot/grub/config.cfg
@@ -27,4 +27,4 @@ f binary/sha256sum.txt
 f binary/sha256sum.README
 d binary/.disk
 f binary/.disk/mkisofs
-f amelia-testing-amd64-amd64.hybrid.iso
+f amelia-linux-nicole-amd64.hybrid.iso
