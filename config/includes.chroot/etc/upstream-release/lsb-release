@@ -1,0 +1,4 @@
+DISTRIB_ID=Debian
+DISTRIB_RELEASE=testing
+DISTRIB_CODENAME=testing
+DISTRIB_DESCRIPTION="Debian GNU/Linux testing"
