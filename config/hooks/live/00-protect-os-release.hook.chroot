@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-echo "Applying dpkg-divert to protect Amelia branding & identity files..."
+echo "Applying dpkg-divert to protect Amelia branding & leverage upstream .debian files..."
 
 divert_file() {
     file_path="$1"
@@ -20,19 +20,48 @@ divert_file() {
     fi
 }
 
-# 1. Protect /etc/os-release, /usr/lib/os-release, and /etc/upstream-release/lsb-release
+# 1. Protect /etc/os-release and /usr/lib/os-release
 divert_file "/etc/os-release" "/etc/os-release.debian"
 divert_file "/usr/lib/os-release" "/usr/lib/os-release.debian"
-divert_file "/etc/upstream-release/lsb-release" "/etc/upstream-release/lsb-release.debian"
 
 # 2. Protect /etc/issue and /etc/issue.net
 divert_file "/etc/issue" "/etc/issue.debian"
 divert_file "/etc/issue.net" "/etc/issue.net.debian"
 
-# 3. Protect GNOME Settings D-Bus service so Dark/Light About logo shim persists across upgrades
+# 3. Restore genuine Debian upstream files into *.debian via base-files
+# (Because live-build chroot_includes copies Amelia files before chroot_hooks run)
+if grep -q '^ID=amelia' /usr/lib/os-release.debian 2>/dev/null || [ ! -f /usr/lib/os-release.debian ]; then
+    apt-get install --reinstall -o Dpkg::Options::="--force-confnew" -y base-files >/dev/null 2>&1 || true
+fi
+
+# 4. Leverage /usr/lib/os-release.debian to populate /etc/upstream-release/ automatically
+mkdir -p /etc/upstream-release
+ln -sf /usr/lib/os-release.debian /etc/upstream-release/os-release
+
+if [ -f /usr/lib/os-release.debian ] && ! grep -q '^ID=amelia' /usr/lib/os-release.debian 2>/dev/null; then
+    (
+        . /usr/lib/os-release.debian
+        cat > /etc/upstream-release/lsb-release <<EOF
+DISTRIB_ID=Debian
+DISTRIB_RELEASE=${VERSION_ID:-testing}
+DISTRIB_CODENAME=${VERSION_CODENAME:-testing}
+DISTRIB_DESCRIPTION="${PRETTY_NAME:-Debian GNU/Linux}"
+EOF
+    )
+fi
+
+# 5. Keep /etc/upstream-release/lsb-release synced whenever base-files upgrades /usr/lib/os-release.debian
+mkdir -p /etc/apt/apt.conf.d
+cat > /etc/apt/apt.conf.d/99-amelia-upstream-release << 'APT_EOF'
+DPkg::Post-Invoke {
+    "if [ -f /usr/lib/os-release.debian ] && ! grep -q '^ID=amelia' /usr/lib/os-release.debian 2>/dev/null; then . /usr/lib/os-release.debian; printf 'DISTRIB_ID=Debian\nDISTRIB_RELEASE=%s\nDISTRIB_CODENAME=%s\nDISTRIB_DESCRIPTION=\"%s\"\n' \"${VERSION_ID:-testing}\" \"${VERSION_CODENAME:-testing}\" \"${PRETTY_NAME:-Debian GNU/Linux}\" > /etc/upstream-release/lsb-release; fi";
+};
+APT_EOF
+
+# 6. Protect GNOME Settings D-Bus service so Dark/Light About logo shim persists across upgrades
 divert_file "/usr/share/dbus-1/services/org.gnome.Settings.service" "/usr/share/dbus-1/services/org.gnome.Settings.service.debian"
 
-# 4. Protect vendor/desktop-base emblem so desktop-base upgrades never restore Debian swirl
+# 7. Protect vendor/desktop-base emblem so desktop-base upgrades never restore Debian swirl
 divert_file "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian.svg" "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian.svg.debian"
 divert_file "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-white.svg" "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-white.svg.debian"
 divert_file "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-symbolic.svg" "/usr/share/icons/desktop-base/scalable/emblems/emblem-debian-symbolic.svg.debian"
