@@ -27,4 +27,4 @@ f binary/sha256sum.txt
 f binary/sha256sum.README
 d binary/.disk
 f binary/.disk/mkisofs
-f amelia-testing-amd64-amd64.hybrid.iso
+f amelia-linux-charlotte-amd64.hybrid.iso

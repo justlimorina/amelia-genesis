@@ -41,7 +41,7 @@ bubblewrap	0.13.1-1
 busybox	1:1.38.0-3+b1
 bzip2	1.0.8-6+b2
 ca-certificates	20260816+nmu1
-calamares	3.4.2-1.1+b1
+calamares	3.4.3-1
 calamares-settings-debian	14.0.2-1
 colord	1.4.8-3
 colord-data	1.4.8-3
@@ -154,7 +154,7 @@ firmware-qcom-dsp	0~20261019-1
 firmware-qlogic	20260916-1
 firmware-realtek	20260916-1
 firmware-siano	20260916-1
-firmware-sof-signed	2026.09.1-1
+firmware-sof-signed	2026.09.2-1
 firmware-zd1211	1:1.5-13
 flatpak	1.18.4-1
 folks-common	0.15.12-3
@@ -236,7 +236,7 @@ gir1.2-rest-1.0:amd64	0.10.2-1+b2
 gir1.2-rsvg-2.0:amd64	2.63.3+dfsg-1
 gir1.2-secret-1:amd64	0.21.8.2-2
 gir1.2-shumate-1.0:amd64	1.7.0-3
-gir1.2-soup-3.0:amd64	3.8.0-3
+gir1.2-soup-3.0:amd64	3.8.1-1
 gir1.2-upowerglib-1.0:amd64	1.91.5-1
 gir1.2-webkit2-4.1:amd64	2.52.6-1
 gir1.2-wnck-3.0:amd64	43.3-1+b2
@@ -886,9 +886,9 @@ liblttng-ust-common1t64:amd64	2.16.0-2
 liblttng-ust-ctl6:amd64	2.16.0-2
 liblttng-ust1t64:amd64	2.16.0-2
 liblua5.4-0:amd64	5.4.9-1
-liblua5.5-0:amd64	5.5.1-1
+liblua5.5-0:amd64	5.5.1-2
 liblwp-mediatypes-perl	6.05-1
-liblwp-protocol-https-perl	6.15-1
+liblwp-protocol-https-perl	6.17-1
 liblz4-1:amd64	1.10.0-10
 liblzma5:amd64	5.8.4-1
 liblzo2-2:amd64	2.10-3+b2
@@ -1155,7 +1155,7 @@ libslang2:amd64	2.3.3-6
 libsm6:amd64	2:1.2.6-1+b2
 libsmartcols1:amd64	2.42.4-1
 libsmbclient0:amd64	2:4.25.1+dfsg-1
-libsnappy1v5:amd64	1.3.1-3
+libsnappy1v5:amd64	1.3.1-4
 libsndfile1:amd64	1.2.2-4+b1
 libsnmp-base	5.9.5.2+dfsg-3
 libsnmp45:amd64	5.9.5.2+dfsg-3
@@ -1163,8 +1163,8 @@ libsodium26:amd64	1.0.22-2
 libsonic0:amd64	0.2.0-13+b2
 libsord-0-0:amd64	0.16.22-1
 libsoundtouch1:amd64	2.4.1+ds-1
-libsoup-3.0-0:amd64	3.8.0-3
-libsoup-3.0-common	3.8.0-3
+libsoup-3.0-0:amd64	3.8.1-1
+libsoup-3.0-common	3.8.1-1
 libsoxr0:amd64	0.1.3-4.1+b1
 libspa-0.2-bluetooth:amd64	1.6.9-2
 libspa-0.2-libcamera:amd64	1.6.9-2
@@ -1366,7 +1366,7 @@ libxxf86vm1:amd64	1:1.1.4-2+b1
 libxxhash0:amd64	0.8.3-2+b2
 libyajl2:amd64	2.1.0-7
 libyaml-0-2:amd64	0.2.5-2+b1
-libyaml-cpp0.9:amd64	0.9.0+dfsg-9
+libyaml-cpp0.9:amd64	0.9.0+dfsg-10
 libyelp-1-0:amd64	49.2-1
 libyuv0:amd64	0.0.1974.20261008-1
 libyyjson0:amd64	0.12.0+ds-2
@@ -1578,8 +1578,8 @@ timgm6mb-soundfont	1.3-5
 tinysparql	3.12.0-1
 tpm-udev	4.2.0-2
 tree	2.3.2-1
-tzdata	2026e-1
-tzdata-legacy	2026e-1
+tzdata	2026f-1
+tzdata-legacy	2026f-1
 ucf	3.0056
 udev	262-1
 udisks2	2.11.2-1
